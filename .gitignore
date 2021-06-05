@@ -1,0 +1,7 @@
+/InterWMSDesctop/bin/*
+/InterWMSDesctop/obj/*
+/InterWMSDesctop/.vs/*
+packages/*
+.vs/*
+/ApiApp/bin/*
+/ApiApp/obj/*

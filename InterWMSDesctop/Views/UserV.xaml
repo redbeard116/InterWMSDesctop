@@ -1,0 +1,126 @@
+﻿<Page x:Class="InterWMSDesctop.Views.UserV"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:viewModels="clr-namespace:InterWMSDesctop.ViewModels"
+      xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:System="clr-namespace:System;assembly=mscorlib"
+      xmlns:enum="clr-namespace:ApiApp.Models;assembly=ApiApp"
+      mc:Ignorable="d" 
+      FontSize="16"
+      d:DataContext="{d:DesignInstance viewModels:UserVM, d:IsDesignTimeCreatable=false}">
+
+    <Page.Resources>
+        <ObjectDataProvider x:Key="userRoleEnum" MethodName="GetValues"
+                               ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enum:UserRole"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Style.Setters>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style.Setters>
+        </Style>
+
+        <Style TargetType="{x:Type TextBlock}">
+            <Style.Setters>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style.Setters>
+        </Style>
+        
+    </Page.Resources>    
+    
+    <Grid
+        Margin="10,5,5,5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Text="Профиль"
+            FontSize="24"
+            HorizontalAlignment="Left"/>
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="0"
+            Text="Имя:"
+            Margin="0,10,10,0"/>
+        <TextBox
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="0,10,10,0"
+            Text="{Binding User.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="0"
+            Text="Фамилия:"
+            Margin="0,10,10,0"/>
+        <TextBox
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="0,10,10,0"
+            Text="{Binding User.SecondName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="0"
+            Text="Роль:"
+            Margin="0,10,10,0"/>
+        <ComboBox
+            Grid.Row="3"
+            Grid.Column="1"
+            Margin="0,10,10,0"
+            SelectedValue="{Binding SelectedRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ItemsSource="{Binding Source={StaticResource userRoleEnum}}"/>
+
+        <TextBlock
+            Grid.Row="4"
+            Grid.Column="0"
+            Text="Логин:"
+            Margin="0,10,10,0"/>
+        <TextBox
+            Grid.Row="4"
+            Grid.Column="1"
+            Margin="0,10,10,0"
+            Text="{Binding User.Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock
+            Grid.Row="5"
+            Grid.Column="0"
+            Text="Пароль:"
+            Margin="0,10,10,0"/>
+        <PasswordBox
+            x:Name="password"
+            Grid.Row="5"
+            Grid.Column="1"
+            Margin="0,10,10,0"/>
+
+        <Button
+            Grid.Row="6"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Content="Применить"
+            VerticalAlignment="Bottom"
+            Command="{Binding EditUserCmd}"
+            CommandParameter="{Binding ElementName=password}"/>
+    </Grid>
+</Page>
