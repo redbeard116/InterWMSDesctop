@@ -26,8 +26,8 @@ namespace ApiApp.Models
     public enum UserRole
     {
         Admin,
-        User,
-        Security,
-        Manager
+        Logistics,
+        Manager,
+        Counterparty
     }
 }

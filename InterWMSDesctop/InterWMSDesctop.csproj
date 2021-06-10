@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{94250D17-F7D9-4EDE-88FF-669E176E3D73}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>RentDesctop</RootNamespace>
+    <RootNamespace>InterWMSDesctop</RootNamespace>
     <AssemblyName>RentDesctop</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -253,19 +253,51 @@
     <Compile Include="Services\DialogService\DialogService.cs" />
     <Compile Include="Services\DialogService\IDialogService.cs" />
     <Compile Include="ViewModels\Cmd\AsyncCommand.cs" />
+    <Compile Include="ViewModels\ContractVM.cs" />
+    <Compile Include="ViewModels\CounterpartyesVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="ViewModels\Cmd\RelayCommand.cs" />
     <Compile Include="ViewModels\Controls\MenuItem.cs" />
     <Compile Include="ViewModels\DashboardVM.cs" />
+    <Compile Include="ViewModels\OperationVM.cs" />
+    <Compile Include="ViewModels\ProductPriceVM.cs" />
+    <Compile Include="ViewModels\ProductsTypeVM.cs" />
+    <Compile Include="ViewModels\ProductVM.cs" />
+    <Compile Include="ViewModels\ReportsVM.cs" />
+    <Compile Include="ViewModels\StorageAreaVM.cs" />
     <Compile Include="ViewModels\UserActVM.cs" />
     <Compile Include="ViewModels\UsersVM.cs" />
     <Compile Include="ViewModels\UserVM.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\ContractV.xaml.cs">
+      <DependentUpon>ContractV.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CounterpartyesV.xaml.cs">
+      <DependentUpon>CounterpartyesV.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\OperationV.xaml.cs">
+      <DependentUpon>OperationV.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProductPriceV.xaml.cs">
+      <DependentUpon>ProductPriceV.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProductsTypeV.xaml.cs">
+      <DependentUpon>ProductsTypeV.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProductV.xaml.cs">
+      <DependentUpon>ProductV.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReportsV.xaml.cs">
+      <DependentUpon>ReportsV.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StorageAreaV.xaml.cs">
+      <DependentUpon>StorageAreaV.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserActV.xaml.cs">
       <DependentUpon>UserActV.xaml</DependentUpon>
@@ -290,11 +322,43 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ContractV.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CounterpartyesV.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Dashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\OperationV.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProductPriceV.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProductsTypeV.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProductV.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReportsV.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StartPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StorageAreaV.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

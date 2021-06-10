@@ -23,7 +23,7 @@ namespace InterWMSDesctop.ViewModels
         #endregion
 
         #region PublicMethods
-        public async Task Load()
+        public override async Task Load()
         {
             _currUser = await _userService.GetCurrentUser();
             SelectedRole = _currUser.Role;

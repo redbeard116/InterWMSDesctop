@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace InterWMSDesctop.ViewModels
 {
@@ -41,6 +42,11 @@ namespace InterWMSDesctop.ViewModels
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public virtual async Task Load()
+        {
+
+        }
         #endregion
     }
 }

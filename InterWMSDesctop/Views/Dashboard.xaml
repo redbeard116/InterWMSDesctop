@@ -71,7 +71,9 @@
                        ItemTemplate="{StaticResource MenuItemTemplate}"
                        ItemsSource="{Binding Menu}"
                        OptionsItemTemplate="{StaticResource MenuItemTemplate}"
-                       OptionsItemsSource="{Binding OptionsMenu}">
+                       OptionsItemsSource="{Binding OptionsMenu}"
+                       SelectedItem="{Binding SelectedMenuItem}"
+                       SelectedOptionsItem="{Binding SelecteOptionsdMenuItem}">
         <mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
             <DataTemplate>
                 <TextBlock

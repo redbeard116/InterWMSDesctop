@@ -12,6 +12,14 @@ using InterWMSDesctop.Views;
 using System;
 using System.Net.Http;
 using System.Windows;
+using ApiApp.Services.DictionaryService;
+using ApiApp.Services.StorageAreaService;
+using ApiApp.Services.CounterpartyService;
+using ApiApp.Services.ProductPriceService;
+using ApiApp.Services.ProductService;
+using ApiApp.Services.ContractService;
+using ApiApp.Services.OperationService;
+using ApiApp.Services.ReportsService;
 
 namespace InterWMSDesctop
 {
@@ -34,8 +42,7 @@ namespace InterWMSDesctop
             var dashV = new Dashboard();
             if (mainV.ShowDialog() == true)
             {
-                var dashVM = new DashboardVM(AppServices.Instance.GetService<IUserProvider>(),
-                                             AppServices.Instance.GetService<IUserService>());
+                var dashVM = AppServices.Instance.GetService<DashboardVM>();
                 dashVM.Load();
                 dashV.DataContext = dashVM;
             }
@@ -69,7 +76,7 @@ namespace InterWMSDesctop
             {
                 var client = new HttpClient
                 {
-                    BaseAddress = new Uri("https://localhost:5001")
+                    BaseAddress = new Uri("https://localhost:5001/")
                 };
                 return client;
             });
@@ -82,6 +89,24 @@ namespace InterWMSDesctop
                 return authService;
             });
             services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IDictionaryService, DictionaryService>();
+            services.AddSingleton<IStorageAreaService, StorageAreaService>();
+            services.AddSingleton<ICounterpartyService, CounterpartyService>();
+            services.AddSingleton<IProductPriceService, ProductPriceService>();
+            services.AddSingleton<IProductService, ProductService>();
+            services.AddSingleton<IContractService, ContractService>();
+            services.AddSingleton<IOperationService, OperationService>();
+            services.AddSingleton<IReportsService, ReportsService>();
+            services.AddSingleton<DashboardVM>();
+            services.AddSingleton<UserVM>();
+            services.AddSingleton<StorageAreaVM>();
+            services.AddSingleton<ProductsTypeVM>();
+            services.AddSingleton<CounterpartyesVM>();
+            services.AddSingleton<ProductPriceVM>();
+            services.AddSingleton<ProductVM>();
+            services.AddSingleton<ContractVM>();
+            services.AddSingleton<OperationVM>();
+            services.AddSingleton<ReportsVM>();
             services.AddScoped<AuthStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<AuthStateProvider>());
 

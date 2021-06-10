@@ -26,7 +26,7 @@ namespace InterWMSDesctop.ViewModels
         #endregion
 
         #region Public methods
-        public async Task Load()
+        public override async Task Load()
         {
             _users = await _userService.GetUsers();
             OnPropertyChanged(nameof(Users));
