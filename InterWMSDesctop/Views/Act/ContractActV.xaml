@@ -1,0 +1,14 @@
+﻿<mah:MetroWindow x:Class="InterWMSDesctop.Views.ContractActV"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:vm="clr-namespace:InterWMSDesctop.ViewModels.Acts"
+        mc:Ignorable="d"
+        Height="300" Width="360"
+        d:DataContext="{d:DesignInstance viewModels:ContractActVM, d:IsDesignTimeCreatable=false}">
+    <Grid>
+        
+    </Grid>
+</mah:MetroWindow>

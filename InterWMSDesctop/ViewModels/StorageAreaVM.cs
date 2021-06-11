@@ -1,5 +1,6 @@
 ﻿using ApiApp.Models;
 using ApiApp.Services.StorageAreaService;
+using InterWMSDesctop.Services.DialogService;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,26 +11,24 @@ namespace InterWMSDesctop.ViewModels
     {
         #region Fields
         private readonly IStorageAreaService _storageAreaService;
+        private readonly IDialogService _dialogService;
 
         private IEnumerable<StorageArea> _storageAreas;
         private StorageArea _selectedStorageArea;
-        private string _location;
         #endregion
 
         #region Constructor
-        public StorageAreaVM(IStorageAreaService storageAreaService)
+        public StorageAreaVM(IStorageAreaService storageAreaService,
+                             IDialogService dialogService)
         {
             _storageAreaService = storageAreaService;
+            _dialogService = dialogService;
         }
         #endregion
 
         #region Properties
         public IEnumerable<StorageArea> StorageAreas => _storageAreas;
-        public string Location
-        {
-            get => _location;
-            set => OnPropertyChanged(ref _location, value, () => Location);
-        }
+
         public StorageArea SelectedStorageArea
         {
             get => _selectedStorageArea;
@@ -54,17 +53,23 @@ namespace InterWMSDesctop.ViewModels
 
         private bool CanAdd(object obj)
         {
-            return !string.IsNullOrWhiteSpace(Location);
+            return true;
         }
 
         private async Task Add(object obj)
         {
-            var result = await _storageAreaService.AddStorageArea(new StorageArea { Location = Location });
+            var location = _dialogService.InputDialog("Создание новой зоны", "");
+
+            if (string.IsNullOrWhiteSpace(location))
+            {
+                return;
+            }
+
+            var result = await _storageAreaService.AddStorageArea(new StorageArea { Location = location });
 
             if (result != null)
             {
                 await Load();
-                Location = null;
             }
         }
         #endregion

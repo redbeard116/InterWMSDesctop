@@ -1,5 +1,6 @@
 ﻿using ApiApp.Models;
 using ApiApp.Services.CounterpartyService;
+using InterWMSDesctop.Services.DialogService;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,41 +12,22 @@ namespace InterWMSDesctop.ViewModels
     {
         #region Fields
         private readonly ICounterpartyService _counterpartyService;
+        private readonly IDialogService _dialogService;
 
         private IEnumerable<Counterparty> _counterparties;
-        private Counterparty _selectesCounterparty;
-        private Counterparty _newCounterparty;
-        private User _user;
         #endregion
 
         #region Constructor
-        public CounterpartyesVM(ICounterpartyService counterpartyService)
+        public CounterpartyesVM(ICounterpartyService counterpartyService,
+                                IDialogService dialogService)
         {
             _counterpartyService = counterpartyService;
+            _dialogService = dialogService;
         }
         #endregion
 
         #region Properties
         public IEnumerable<Counterparty> Counterparties => _counterparties;
-
-        public Counterparty SelectedCounterparty
-        {
-            get => _selectesCounterparty;
-            set => OnPropertyChanged(ref _selectesCounterparty, value, () => SelectedCounterparty);
-        }
-        public Counterparty NewCounterparty
-        {
-            get => _newCounterparty;
-            set => OnPropertyChanged(ref _newCounterparty, value, () => NewCounterparty);
-        }
-
-        public User User
-        {
-            get => _user;
-            set => OnPropertyChanged(ref _user, value, () => User);
-        }
-
-        public Visibility NewCounterpartyVisibility { get; private set; } = Visibility.Collapsed;
         #endregion
 
         #region Public methods
@@ -57,21 +39,6 @@ namespace InterWMSDesctop.ViewModels
         #endregion
 
         #region Commands
-        #region CreateCmd
-        private ICommand _createCmd;
-
-        public ICommand CreateCmd
-            => _createCmd ?? (_createCmd = new RelayCommand(Create));
-
-        private void Create(object obj)
-        {
-            NewCounterparty = new Counterparty();
-            User = new User();
-            NewCounterpartyVisibility = Visibility.Visible;
-            OnPropertyChanged(() => NewCounterpartyVisibility);
-        }
-        #endregion
-
         #region AddCmd
         private ICommand _addCmd;
 
@@ -80,24 +47,18 @@ namespace InterWMSDesctop.ViewModels
 
         private bool CanAdd(object obj)
         {
-            return NewCounterparty != null;
+            return true;
         }
 
         private async Task Add(object obj)
         {
             try
             {
-                User.Role = UserRole.Counterparty;
-                NewCounterparty.User = User;
-                var result = await _counterpartyService.AddCounterparty(NewCounterparty);
+                var result = _dialogService.OpenEditCounterparty(null);
 
                 if (result != null)
                 {
                     await Load();
-                    NewCounterparty = null;
-                    User = null;
-                    NewCounterpartyVisibility = Visibility.Collapsed;
-                    OnPropertyChanged(() => NewCounterpartyVisibility);
                 }
             }
             catch (System.Exception)
@@ -133,13 +94,12 @@ namespace InterWMSDesctop.ViewModels
 
         private async Task Edit(object obj)
         {
-            if (SelectedCounterparty != null)
+            if (obj is Counterparty counterparty)
             {
-                var result = await _counterpartyService.EditCounterparty(SelectedCounterparty);
+                var result = _dialogService.OpenEditCounterparty(counterparty, true);
                 if (result != null)
                 {
                     await Load();
-                    SelectedCounterparty = null;
                 }
             }
         }

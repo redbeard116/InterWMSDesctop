@@ -31,7 +31,6 @@ namespace InterWMSDesctop.ViewModels
         private ProductPriceVM _productPriceVM;
         private ProductVM _productVM;
         private ContractVM _contractVM;
-        private OperationVM _operationVM;
         private ReportsVM _reportsVM;
         private IDialogService _dialogService;
 
@@ -53,7 +52,7 @@ namespace InterWMSDesctop.ViewModels
         #region Public Methods
         public override async Task Load()
         {
-            _dialogService = new DialogService(DialogCoordinator.Instance, _userService, this);
+            _dialogService = AppServices.Instance.GetService< IDialogService>();
             _userVM = AppServices.Instance.GetService<UserVM>();
             _productsTypeVM = AppServices.Instance.GetService<ProductsTypeVM>();
             _storageAreaVM = AppServices.Instance.GetService<StorageAreaVM>();
@@ -61,10 +60,9 @@ namespace InterWMSDesctop.ViewModels
             _productPriceVM = AppServices.Instance.GetService<ProductPriceVM>();
             _productVM = AppServices.Instance.GetService<ProductVM>();
             _contractVM = AppServices.Instance.GetService<ContractVM>();
-            _operationVM = AppServices.Instance.GetService<OperationVM>();
             _reportsVM = AppServices.Instance.GetService<ReportsVM>();
 
-            _usersVM = new UsersVM(_userService, _dialogService);
+            _usersVM = AppServices.Instance.GetService<UsersVM>(); 
 
             Menu.Add(new MenuItem()
             {
@@ -127,15 +125,6 @@ namespace InterWMSDesctop.ViewModels
                 NavigationType = typeof(ContractV),
                 DataContext = _contractVM,
                 NavigationDestination = new Uri("Views/ContractV.xaml", UriKind.RelativeOrAbsolute)
-            });
-
-            Menu.Add(new MenuItem()
-            {
-                Icon = new PackIconFeatherIcons() { Kind = PackIconFeatherIconsKind.Octagon },
-                Label = "Операции",
-                NavigationType = typeof(OperationV),
-                DataContext = _operationVM,
-                NavigationDestination = new Uri("Views/OperationV.xaml", UriKind.RelativeOrAbsolute)
             });
 
             OptionsMenu.Add(new MenuItem()

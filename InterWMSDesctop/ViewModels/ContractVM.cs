@@ -1,5 +1,6 @@
 ﻿using ApiApp.Models;
 using ApiApp.Services.ContractService;
+using InterWMSDesctop.Services.DialogService;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,27 +11,23 @@ namespace InterWMSDesctop.ViewModels
     {
         #region Fields
         private readonly IContractService _contractService;
+        private readonly IDialogService _dialogService;
 
         private IEnumerable<Contract> _contracts;
-        private Contract _selectOperation;
         private Contract _newOperation;
         #endregion
 
         #region Constructor
-        public ContractVM(IContractService contractService)
+        public ContractVM(IContractService contractService,
+                          IDialogService dialogService)
         {
             _contractService = contractService;
+            _dialogService = dialogService;
         }
         #endregion
 
         #region Properties
         public IEnumerable<Contract> Contracts => _contracts;
-
-        public Contract SelectContract
-        {
-            get => _selectOperation;
-            set => OnPropertyChanged(ref _selectOperation, value, () => SelectContract);
-        }
 
         public Contract NewContract
         {
@@ -61,12 +58,11 @@ namespace InterWMSDesctop.ViewModels
 
         private async Task Add(object obj)
         {
-            var result = await _contractService.AddContract(NewContract);
+            var result = await _dialogService.OpenEditContract(null);
 
             if (result != null)
             {
                 await Load();
-                NewContract = null;
             }
         }
         #endregion
@@ -98,13 +94,12 @@ namespace InterWMSDesctop.ViewModels
 
         private async Task Edit(object obj)
         {
-            if (SelectContract != null)
+            if (obj is Contract contract)
             {
-                var result = await _contractService.EditContract(SelectContract);
+                var result = await _dialogService.OpenEditContract(contract, true);
                 if (result != null)
                 {
                     await Load();
-                    SelectContract = null;
                 }
             }
         }

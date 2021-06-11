@@ -1,5 +1,6 @@
 ﻿using ApiApp.Models;
 using ApiApp.Services.DictionaryService;
+using InterWMSDesctop.Services.DialogService;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,15 +11,17 @@ namespace InterWMSDesctop.ViewModels
     {
         #region Fields
         private readonly IDictionaryService _dictionaryService;
+        private readonly IDialogService _dialogService;
 
         private IEnumerable<ProductType> _productTypes;
-        private string _name;
         #endregion
 
         #region Constructor
-        public ProductsTypeVM(IDictionaryService dictionaryService)
+        public ProductsTypeVM(IDictionaryService dictionaryService,
+                              IDialogService dialogService)
         {
             _dictionaryService = dictionaryService;
+            _dialogService = dialogService;
         }
         #endregion
 
@@ -32,12 +35,6 @@ namespace InterWMSDesctop.ViewModels
 
         #region Properties
         public IEnumerable<ProductType> ProductTypes => _productTypes;
-
-        public string Name
-        {
-            get => _name;
-            set => OnPropertyChanged(ref _name, value, () => Name);
-        }
         #endregion
 
         #region Commands
@@ -49,17 +46,23 @@ namespace InterWMSDesctop.ViewModels
 
         private bool CanAdd(object obj)
         {
-            return !string.IsNullOrWhiteSpace(Name);
+            return true;
         }
 
         private async Task Add(object obj)
         {
-            var result = await _dictionaryService.AddProductTypes(new ProductType { Name = Name });
+            var name = _dialogService.InputDialog("Создание нового типа","");
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return;
+            }
+
+            var result = await _dictionaryService.AddProductTypes(new ProductType { Name = name });
 
             if (result != null)
             {
                 await Load();
-                Name = null;
             }
         }
         #endregion

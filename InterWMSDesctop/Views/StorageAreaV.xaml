@@ -68,18 +68,9 @@
             Grid.Row="2"
             Grid.Column="0"
             Margin="0,5,0,0"
-            Orientation="Horizontal">
-
-            <TextBlock
-                Text="Место:"
-                VerticalAlignment="Center"/>
-
-            <TextBox
-                Text="{Binding Location, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                MinWidth="200"
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"/>
-
+            Orientation="Horizontal"
+            HorizontalAlignment="Right">
+            
             <Button
                 Content="Создать"
                 HorizontalAlignment="Right"

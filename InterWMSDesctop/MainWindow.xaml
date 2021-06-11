@@ -18,9 +18,9 @@
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands>
             <Button Click="Button_Click">
-                <iconPacks:PackIconModern Width="22"
-                                  Height="22"
-                                  Kind="FoodCupcake" />
+                <TextBlock Width="80"
+                           Height="22"
+                           Text="INTERWMS"/>
             </Button>
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>

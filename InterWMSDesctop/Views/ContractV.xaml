@@ -4,12 +4,94 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:viewModels="clr-namespace:InterWMSDesctop.ViewModels"
+      xmlns:converters="clr-namespace:InterWMSDesctop.Converters"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ContractV"
       d:DataContext="{d:DesignInstance viewModels:ContractVM, d:IsDesignTimeCreatable=false}">
 
-    <Grid>
-        
+    <Page.Resources>
+        <converters:DateConverter x:Key="DateConverter"/>
+    </Page.Resources>
+    
+    <Grid
+        Margin="10,5,5,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Text="Договора"
+            FontSize="24"
+            Margin="0,0,0,10"
+            HorizontalAlignment="Left"/>
+
+        <DataGrid
+            Grid.Row="1"
+            Grid.Column="0"
+            ColumnWidth="*"
+            CanUserAddRows="False"
+            AutoGenerateColumns="False"
+            SelectedValue="{Binding SelectContract, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ItemsSource="{Binding Contracts, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="*"
+                    Header="ID"
+                    Binding="{Binding Id}"/>
+                <DataGridTextColumn
+                    Width="*"
+                    Header="Контрагент"
+                    Binding="{Binding Counterparty.User.FullName}"/>
+                <DataGridTextColumn
+                    Width="*"
+                    Header="Дата"
+                    Binding="{Binding Date, Converter={StaticResource DateConverter}}"/>
+                <DataGridTextColumn
+                    Width="*"
+                    Header="Сумма"
+                    Binding="{Binding Sum}"/>
+                
+                <DataGridTemplateColumn
+                    Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button 
+                                Content="Изменить"
+                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}, Path=DataContext.EditCmd}"
+                                CommandParameter="{Binding}"
+                                Opacity="0.7"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn
+                    Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button 
+                                Content="Удалить"
+                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}, Path=DataContext.DeleteCmd}"
+                                CommandParameter="{Binding}"
+                                Opacity="0.7"
+                                Background="Red"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+        <Button
+            Grid.Row="2"
+            Margin="0,5,0,0"
+            HorizontalAlignment="Right"
+            Content="Новый договор"
+            Width="120"
+            Command="{Binding AddCmd}"
+            Background="DeepSkyBlue"/>
     </Grid>
 </Page>

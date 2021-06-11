@@ -18,8 +18,9 @@ using ApiApp.Services.CounterpartyService;
 using ApiApp.Services.ProductPriceService;
 using ApiApp.Services.ProductService;
 using ApiApp.Services.ContractService;
-using ApiApp.Services.OperationService;
 using ApiApp.Services.ReportsService;
+using InterWMSDesctop.Services.DialogService;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace InterWMSDesctop
 {
@@ -95,9 +96,16 @@ namespace InterWMSDesctop
             services.AddSingleton<IProductPriceService, ProductPriceService>();
             services.AddSingleton<IProductService, ProductService>();
             services.AddSingleton<IContractService, ContractService>();
-            services.AddSingleton<IOperationService, OperationService>();
             services.AddSingleton<IReportsService, ReportsService>();
             services.AddSingleton<DashboardVM>();
+            services.AddSingleton<IDialogService>(oprions=>
+            {
+                return new DialogService(DialogCoordinator.Instance,
+                                         oprions.GetService<IUserService>(),
+                                         oprions.GetService<IContractService>(),
+                                         oprions.GetService<ICounterpartyService>(),
+                                         oprions.GetService<DashboardVM>());
+            });
             services.AddSingleton<UserVM>();
             services.AddSingleton<StorageAreaVM>();
             services.AddSingleton<ProductsTypeVM>();
@@ -105,8 +113,8 @@ namespace InterWMSDesctop
             services.AddSingleton<ProductPriceVM>();
             services.AddSingleton<ProductVM>();
             services.AddSingleton<ContractVM>();
-            services.AddSingleton<OperationVM>();
             services.AddSingleton<ReportsVM>();
+            services.AddSingleton<UsersVM>();
             services.AddScoped<AuthStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<AuthStateProvider>());
 

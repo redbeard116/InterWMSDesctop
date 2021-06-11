@@ -98,16 +98,16 @@ namespace InterWMSDesctop.ViewModels
                         _currUser.Password = passwordBox.Password;
                     }
 
+                    _currUser.FirstName = FirstName;
+                    _currUser.SecondName = SecondName;
+                    _currUser.Login = Login;
+
                     if (IsEdit)
                     {
                         _currUser = await _userService.EditUser(_currUser);
                     }
                     else
                     {
-                        _currUser.FirstName = FirstName;
-                        _currUser.SecondName = SecondName;
-                        _currUser.Login = Login;
-
                         var id = await _userService.AddUser(_currUser);
                         if (id.HasValue)
                         {

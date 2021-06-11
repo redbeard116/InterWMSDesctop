@@ -17,27 +17,18 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-
         <TextBlock
             Grid.Row="0"
-            Grid.Column="0"
-            Grid.ColumnSpan="2"
-            Text="Зоны хранения"
+            Text="Контагенты"
             FontSize="24"
             Margin="0,0,0,10"
             HorizontalAlignment="Left"/>
 
         <DataGrid
             Grid.Row="1"
-            Grid.Column="0"
             ColumnWidth="*"
             CanUserAddRows="False"
             AutoGenerateColumns="False"
-            SelectedValue="{Binding SelectedCounterparty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             ItemsSource="{Binding Counterparties, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <DataGrid.Columns>
                 <DataGridTextColumn
@@ -61,6 +52,18 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button 
+                                Content="Изменить"
+                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}, Path=DataContext.EditCmd}"
+                                CommandParameter="{Binding}"
+                                Opacity="0.7"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn
+                    Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button 
                                 Content="Удалить"
                                 Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}, Path=DataContext.DeleteCmd}"
                                 CommandParameter="{Binding}"
@@ -72,188 +75,13 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid
-            Grid.Row="1"
-            Grid.RowSpan="2"
-            Grid.Column="1"
-            Margin="5">
-            <Grid.Style>
-                <Style TargetType="{x:Type Grid}">
-                    <Setter Property="Visibility" Value="Visible"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedCounterparty}" Value="{x:Null}">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding NewCounterpartyVisibility}" Value="Visible">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="100"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock
-                Grid.Row="0"
-                Grid.Column="0"
-                Text="Имя:"/>
-
-            <TextBox
-                Grid.Row="0"
-                Grid.Column="1"
-                Text="{Binding SelectedCounterparty.User.FirstName}"/>
-
-            <TextBlock
-                Margin="0,5,0,0"
-                Grid.Row="1"
-                Grid.Column="0"
-                Text="Фамилия:"/>
-
-            <TextBox
-                Margin="0,5,0,0"
-                Grid.Row="1"
-                Grid.Column="1"
-                Text="{Binding SelectedCounterparty.User.SecondName}"/>
-
-            <TextBlock
-                Margin="0,5,0,0"
-                Grid.Row="2"
-                Grid.Column="0"
-                Text="Счет:"/>
-
-            <TextBox
-                Margin="0,5,0,0"
-                Grid.Row="2"
-                Grid.Column="1"
-                Text="{Binding SelectedCounterparty.Account}"/>
-
-
-            <TextBlock
-                Margin="0,5,0,0"
-                Grid.Row="3"
-                Grid.Column="0"
-                Text="Инн:"/>
-
-            <TextBox
-                Margin="0,5,0,0"
-                Grid.Row="3"
-                Grid.Column="1"
-                Text="{Binding SelectedCounterparty.INN}"/>
-
-            <Button
-                Margin="0,5,0,0"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Grid.Row="4"
-                Content="Изменить"
-                HorizontalAlignment="Right"
-                Command="{Binding EditCmd}"/>
-        </Grid>
-
-        <Grid
-            Grid.Row="1"
-            Grid.RowSpan="2"
-            Grid.Column="1"
-            Margin="5"
-            Visibility="{Binding NewCounterpartyVisibility}">
-            <Grid.Style>
-                <Style TargetType="{x:Type Grid}">
-                    <Setter Property="Visibility" Value="Visible"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedStorageArea}" Value="{x:Null}">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="70"/>
-                <ColumnDefinition Width="100"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock
-                Grid.Row="0"
-                Grid.Column="0"
-                Text="Имя:"/>
-
-            <TextBox
-                Grid.Row="0"
-                Grid.Column="1"
-                Text="{Binding User.FirstName}"/>
-
-            <TextBlock
-                Margin="0,5,0,0"
-                Grid.Row="1"
-                Grid.Column="0"
-                Text="Фамилия:"/>
-
-            <TextBox
-                Margin="0,5,0,0"
-                Grid.Row="1"
-                Grid.Column="1"
-                Text="{Binding User.SecondName}"/>
-
-            <TextBlock
-                Margin="0,5,0,0"
-                Grid.Row="2"
-                Grid.Column="0"
-                Text="Счет:"/>
-
-            <TextBox
-                Margin="0,5,0,0"
-                Grid.Row="2"
-                Grid.Column="1"
-                Text="{Binding NewCounterparty.Account}"/>
-
-
-            <TextBlock
-                Margin="0,5,0,0"
-                Grid.Row="3"
-                Grid.Column="0"
-                Text="Инн:"/>
-
-            <TextBox
-                Margin="0,5,0,0"
-                Grid.Row="3"
-                Grid.Column="1"
-                Text="{Binding NewCounterparty.INN}"/>
-
-            <Button
-                Margin="0,5,0,0"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Grid.Row="4"
-                Content="Сохранить"
-                HorizontalAlignment="Right"
-                Command="{Binding AddCmd}"/>
-        </Grid>
-
         <Button
-            Grid.Column="0"
             Grid.Row="2"
             Margin="0,5,0,0"
             HorizontalAlignment="Right"
             Content="Новый конграгент"
             Width="120"
-            Command="{Binding CreateCmd}"
+            Command="{Binding AddCmd}"
             Background="DeepSkyBlue"/>
     </Grid>
 

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using ApiApp.Models;
+using System.Threading.Tasks;
 
 namespace InterWMSDesctop.Services.DialogService
 {
@@ -6,5 +7,8 @@ namespace InterWMSDesctop.Services.DialogService
     {
         Task<bool?> OpenEditUser(int? userId, bool isEdit = false);
         Task ShowErrorDialog(string message);
+        Task<bool?> OpenEditContract(Contract contract, bool isEdit = false);
+        bool? OpenEditCounterparty(Counterparty counterparty, bool isEdit = false);
+        string InputDialog(string title, string message);
     }
 }
