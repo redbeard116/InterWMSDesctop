@@ -1,5 +1,6 @@
 ﻿using ApiApp.Models;
 using ApiApp.Services.ProductService;
+using InterWMSDesctop.Services.DialogService;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,6 +11,7 @@ namespace InterWMSDesctop.ViewModels
     {
         #region Fields
         private readonly IProductService _productServices;
+        private readonly IDialogService _dialogService;
 
         private IEnumerable<Product> _products;
         private Product _selectedProduct;
@@ -17,26 +19,16 @@ namespace InterWMSDesctop.ViewModels
         #endregion
 
         #region Constructor
-        public ProductVM(IProductService productService)
+        public ProductVM(IProductService productService,
+                         IDialogService dialogService)
         {
             _productServices = productService;
+            _dialogService = dialogService;
         }
         #endregion
 
         #region Properties
         public IEnumerable<Product> Products => _products;
-
-        public Product SelectedProduct
-        {
-            get => _selectedProduct;
-            set => OnPropertyChanged(ref _selectedProduct, value, () => SelectedProduct);
-        }
-
-        public Product NewProduct
-        {
-            get => _newProduct;
-            set => OnPropertyChanged(ref _newProduct, value, () => NewProduct);
-        }
         #endregion
 
         #region Public methods
@@ -61,12 +53,11 @@ namespace InterWMSDesctop.ViewModels
 
         private async Task Add(object obj)
         {
-            var result = await _productServices.AddProduct(NewProduct);
+            var result = await _dialogService.OpenEditProduct(null);
 
-            if (result != null)
+            if (result == true)
             {
                 await Load();
-                NewProduct = null;
             }
         }
         #endregion
@@ -98,21 +89,17 @@ namespace InterWMSDesctop.ViewModels
 
         private async Task Edit(object obj)
         {
-            if (SelectedProduct != null)
+            if (obj is Product product)
             {
-                var result = await _productServices.EditProduct(SelectedProduct);
-                if (result != null)
+                var result = await _dialogService.OpenEditProduct(product, true);
+
+                if (result == true)
                 {
                     await Load();
-                    SelectedProduct = null;
                 }
             }
         }
         #endregion
-        #endregion
-
-        #region Private methods
-
         #endregion
     }
 }

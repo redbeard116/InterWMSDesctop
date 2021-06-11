@@ -12,7 +12,7 @@
              FontSize="16"
              WindowStartupLocation="CenterScreen"
              d:DataContext="{d:DesignInstance viewModels:UserActVM, d:IsDesignTimeCreatable=false}" 
-             Height="300" Width="360">
+             Height="450" Width="600">
 
     <mah:MetroWindow.Resources>
         <ObjectDataProvider x:Key="userRoleEnum" MethodName="GetValues"

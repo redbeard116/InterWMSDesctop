@@ -14,7 +14,6 @@ namespace InterWMSDesctop.ViewModels
         private readonly IDialogService _dialogService;
 
         private IEnumerable<StorageArea> _storageAreas;
-        private StorageArea _selectedStorageArea;
         #endregion
 
         #region Constructor
@@ -28,12 +27,6 @@ namespace InterWMSDesctop.ViewModels
 
         #region Properties
         public IEnumerable<StorageArea> StorageAreas => _storageAreas;
-
-        public StorageArea SelectedStorageArea
-        {
-            get => _selectedStorageArea;
-            set => OnPropertyChanged(ref _selectedStorageArea, value, () => SelectedStorageArea);
-        }
         #endregion
 
         #region Public methods
@@ -101,13 +94,21 @@ namespace InterWMSDesctop.ViewModels
 
         private async Task Edit(object obj)
         {
-            if (SelectedStorageArea != null)
+            if (obj is StorageArea storageArea)
             {
-                var result = await _storageAreaService.EditStorageArea(SelectedStorageArea);
+                var location = _dialogService.InputDialog("Изменение зоны", "", storageArea.Location);
+
+                if (string.IsNullOrWhiteSpace(location))
+                {
+                    return;
+                }
+
+                storageArea.Location = location;
+
+                var result = await _storageAreaService.EditStorageArea(storageArea);
                 if (result != null)
                 {
                     await Load();
-                    SelectedStorageArea = null;
                 }
             }
         }

@@ -34,18 +34,22 @@
                 <DataGridTextColumn
                     Width="*"
                     Header="ID"
+                    IsReadOnly="True"
                     Binding="{Binding Id}"/>
                 <DataGridTextColumn
                     Width="*"
                     Header="ФИО"
+                    IsReadOnly="True"
                     Binding="{Binding User.FullName}"/>
                 <DataGridTextColumn
                     Width="*"
                     Header="Счет"
+                    IsReadOnly="True"
                     Binding="{Binding Account}"/>
                 <DataGridTextColumn
                     Width="*"
                     Header="ИНН"
+                    IsReadOnly="True"
                     Binding="{Binding INN}"/>
                 <DataGridTemplateColumn
                     Width="*">

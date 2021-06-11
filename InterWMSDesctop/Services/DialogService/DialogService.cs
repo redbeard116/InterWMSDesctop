@@ -1,6 +1,8 @@
 ﻿using ApiApp.Models;
 using ApiApp.Services.ContractService;
 using ApiApp.Services.CounterpartyService;
+using ApiApp.Services.DictionaryService;
+using ApiApp.Services.ProductService;
 using ApiApp.Services.UserService;
 using InterWMSDesctop.ViewModels;
 using InterWMSDesctop.ViewModels.Acts;
@@ -18,6 +20,7 @@ namespace InterWMSDesctop.Services.DialogService
         private readonly UserActVM _userActVM;
         private readonly ContractActVM _contractVM;
         private readonly CounterpartyActVM _counterpartyActVM;
+        private readonly ProductActVM _productActVM;
         private readonly object _context;
         #endregion
 
@@ -26,6 +29,8 @@ namespace InterWMSDesctop.Services.DialogService
                              IUserService userService,
                              IContractService contractService,
                              ICounterpartyService counterpartyService,
+                             IProductService productService,
+                             IDictionaryService dictionaryService,
                              object context)
         {
             _dialogCoordinator = dialogCoordinator;
@@ -33,13 +38,17 @@ namespace InterWMSDesctop.Services.DialogService
             _userActVM = new UserActVM(userService, this);
             _contractVM = new ContractActVM(contractService, counterpartyService, this);
             _counterpartyActVM = new CounterpartyActVM(counterpartyService, this);
+            _productActVM = new ProductActVM(productService, dictionaryService, this);
         }
         #endregion
 
         #region IDialogService
-        public string InputDialog(string title, string message)
+        public string InputDialog(string title, string message, string defaultText = null)
         {
-            return _dialogCoordinator.ShowModalInputExternal(_context, title, message);
+            return _dialogCoordinator.ShowModalInputExternal(_context, title, message, new MetroDialogSettings
+            {
+                DefaultText = defaultText
+            });
         }
 
 
@@ -49,7 +58,7 @@ namespace InterWMSDesctop.Services.DialogService
 
             var view = new CounterpartyActV
             {
-                DataContext = _contractVM
+                DataContext = _counterpartyActVM
             };
 
             return view.ShowDialog();
@@ -82,6 +91,18 @@ namespace InterWMSDesctop.Services.DialogService
         public async Task ShowErrorDialog(string message)
         {
             await _dialogCoordinator.ShowMessageAsync(_context, "Ошибка", message);
+        }
+
+        public async Task<bool?> OpenEditProduct(Product product, bool isEdit = false)
+        {
+            await _productActVM.Load(product, isEdit);
+
+            var view = new ProductActV
+            {
+                DataContext = _productActVM
+            };
+
+            return view.ShowDialog();
         }
         #endregion
     }

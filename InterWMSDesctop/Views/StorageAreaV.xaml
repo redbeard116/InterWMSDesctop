@@ -17,15 +17,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        
         <TextBlock
             Grid.Row="0"
-            Grid.Column="0"
-            Grid.ColumnSpan="2"
             Text="Зоны хранения"
             FontSize="24"
             Margin="0,0,0,10"
@@ -33,21 +26,33 @@
 
         <DataGrid
             Grid.Row="1"
-            Grid.Column="0"
             ColumnWidth="*"
             CanUserAddRows="False"
             AutoGenerateColumns="False"
-            SelectedValue="{Binding SelectedStorageArea, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             ItemsSource="{Binding StorageAreas, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Width="*"
                     Header="ID"
+                    IsReadOnly="True"
                     Binding="{Binding Id}"/>
                 <DataGridTextColumn
                     Width="*"
                     Header="Зона"
+                    IsReadOnly="True"
                     Binding="{Binding Location}"/>
+                <DataGridTemplateColumn
+                    Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button 
+                                Content="Изменить"
+                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}, Path=DataContext.EditCmd}"
+                                CommandParameter="{Binding}"
+                                Opacity="0.7"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTemplateColumn
                     Width="*">
                     <DataGridTemplateColumn.CellTemplate>
@@ -66,11 +71,10 @@
 
         <StackPanel
             Grid.Row="2"
-            Grid.Column="0"
             Margin="0,5,0,0"
             Orientation="Horizontal"
             HorizontalAlignment="Right">
-            
+
             <Button
                 Content="Создать"
                 HorizontalAlignment="Right"
@@ -79,64 +83,5 @@
                 Command="{Binding AddCmd}"
                 Background="DeepSkyBlue"/>
         </StackPanel>
-
-        <Grid
-            Grid.Row="1"
-            Grid.RowSpan="2"
-            Grid.Column="1"
-            Margin="5">
-            <Grid.Style>
-                <Style TargetType="{x:Type Grid}">
-                    <Setter Property="Visibility" Value="Visible"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedStorageArea}" Value="{x:Null}">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="100"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock
-                Grid.Row="0"
-                Grid.Column="0"
-                Text="ID:"/>
-
-            <TextBox
-                Grid.Row="0"
-                Grid.Column="1"
-                IsReadOnly="True"
-                Text="{Binding SelectedStorageArea.Id}"/>
-
-            <TextBlock
-                Margin="0,5,0,0"
-                Grid.Row="1"
-                Grid.Column="0"
-                Text="Зона:"/>
-
-            <TextBox
-                Margin="0,5,0,0"
-                Grid.Row="1"
-                Grid.Column="1"
-                Text="{Binding SelectedStorageArea.Location}"/>
-
-            <Button
-                Margin="0,5,0,0"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Grid.Row="2"
-                Content="Изменить"
-                HorizontalAlignment="Right"
-                Command="{Binding EditCmd}"/>
-        </Grid>
     </Grid>
 </Page>

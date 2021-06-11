@@ -36,10 +36,12 @@
                 <DataGridTextColumn
                     Width="*"
                     Header="ID"
+                    IsReadOnly="True"
                     Binding="{Binding Id}"/>
                 <DataGridTextColumn
                     Width="*"
                     Header="Название"
+                    IsReadOnly="True"
                     Binding="{Binding Name}"/>
                 <DataGridTemplateColumn
                     Width="*">

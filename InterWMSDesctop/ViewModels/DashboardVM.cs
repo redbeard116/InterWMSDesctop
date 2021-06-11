@@ -104,18 +104,18 @@ namespace InterWMSDesctop.ViewModels
             {
                 Icon = new PackIconFeatherIcons() { Kind = PackIconFeatherIconsKind.Airplay },
                 Label = "Цены",
-                NavigationType = typeof(ProductV),
+                NavigationType = typeof(ProductPriceV),
                 DataContext = _productPriceVM,
-                NavigationDestination = new Uri("Views/ProductV.xaml", UriKind.RelativeOrAbsolute)
+                NavigationDestination = new Uri("Views/ProductPriceV.xaml", UriKind.RelativeOrAbsolute)
             });
 
             Menu.Add(new MenuItem()
             {
                 Icon = new PackIconFeatherIcons() { Kind = PackIconFeatherIconsKind.Package },
                 Label = "Товары",
-                NavigationType = typeof(ProductPriceV),
+                NavigationType = typeof(ProductV),
                 DataContext = _productVM,
-                NavigationDestination = new Uri("Views/ProductPriceV.xaml", UriKind.RelativeOrAbsolute)
+                NavigationDestination = new Uri("Views/ProductV.xaml", UriKind.RelativeOrAbsolute)
             });
 
             Menu.Add(new MenuItem()

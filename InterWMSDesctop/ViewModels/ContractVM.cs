@@ -60,7 +60,7 @@ namespace InterWMSDesctop.ViewModels
         {
             var result = await _dialogService.OpenEditContract(null);
 
-            if (result != null)
+            if (result == true)
             {
                 await Load();
             }
@@ -97,7 +97,7 @@ namespace InterWMSDesctop.ViewModels
             if (obj is Contract contract)
             {
                 var result = await _dialogService.OpenEditContract(contract, true);
-                if (result != null)
+                if (result == true)
                 {
                     await Load();
                 }

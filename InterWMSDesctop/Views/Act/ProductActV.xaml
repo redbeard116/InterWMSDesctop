@@ -1,4 +1,4 @@
-﻿<mah:MetroWindow x:Class="InterWMSDesctop.Views.Act.CounterpartyActV"
+﻿<mah:MetroWindow  x:Class="InterWMSDesctop.Views.Act.ProductActV"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,11 +6,10 @@
         xmlns:viewModels="clr-namespace:InterWMSDesctop.ViewModels.Acts"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"       
         mc:Ignorable="d"
-        x:Name="view"
+        Height="450" Width="600"
         WindowStartupLocation="CenterScreen"
-        d:DataContext="{d:DesignInstance viewModels:CounterpartyActVM, d:IsDesignTimeCreatable=false}" 
-        Height="450" Width="600">
-
+        x:Name="view"
+        d:DataContext="{d:DesignInstance viewModels:ProductActVM, d:IsDesignTimeCreatable=false}">
 
     <Grid
         Margin="10,5,5,5">
@@ -19,8 +18,6 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -35,10 +32,10 @@
             HorizontalAlignment="Left">
             <TextBlock.Style>
                 <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="Text" Value="Изменить контрагента"/>
+                    <Setter Property="Text" Value="Изменить продукт"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsEdit}" Value="False">
-                            <Setter Property="Text" Value="Создать контрагента"/>
+                        <DataTrigger Binding="{Binding IsEdit}" Value="false">
+                            <Setter Property="Text" Value="Создать продукт"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -54,44 +51,23 @@
             Grid.Row="1"
             Grid.Column="1"
             Margin="0,10,10,0"
-            Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock
             Grid.Row="2"
             Grid.Column="0"
             Text="Фамилия:"
             Margin="0,10,10,0"/>
-        <TextBox
+        <ComboBox
             Grid.Row="2"
             Grid.Column="1"
             Margin="0,10,10,0"
-            Text="{Binding SecondName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <TextBlock
-            Grid.Row="3"
-            Grid.Column="0"
-            Text="Инн:"
-            Margin="0,10,10,0"/>
-        <TextBox
-            Grid.Row="3"
-            Grid.Column="1"
-            Margin="0,10,10,0"
-            Text="{Binding INN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <TextBlock
-            Grid.Row="4"
-            Grid.Column="0"
-            Text="Счет:"
-            Margin="0,10,10,0"/>
-        <TextBox
-            Grid.Row="4"
-            Grid.Column="1"
-            Margin="0,10,10,0"
-            Text="{Binding Account, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
+            DisplayMemberPath="Name"
+            SelectedValue="{Binding SelectType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ItemsSource="{Binding ProductTypes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <Grid
-            Grid.Row="5"
+            Grid.Row="3"
             Grid.Column="0"
             Grid.ColumnSpan="2"
             Margin="5">
@@ -104,7 +80,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Bottom"
                 Content="{Binding ButtonContent}"
-                Command="{Binding CounterpartyActCmd}"
+                Command="{Binding ProductActCmd}"
                 CommandParameter="{Binding ElementName=view}"/>
 
             <Button

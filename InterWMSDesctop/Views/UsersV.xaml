@@ -35,14 +35,17 @@
                 <DataGridTextColumn
                     Width="*"
                     Header="Имя"
+                    IsReadOnly="True"
                     Binding="{Binding FirstName}"/>
                 <DataGridTextColumn
                     Width="*"
                     Header="Фамилия"
+                    IsReadOnly="True"
                     Binding="{Binding SecondName}"/>
                 <DataGridTextColumn
                     Width="*"
                     Header="Роль"
+                    IsReadOnly="True"
                     Binding="{Binding Role}"/>
                 <DataGridTemplateColumn
                     Width="*">

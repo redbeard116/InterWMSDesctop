@@ -64,7 +64,7 @@ namespace InterWMSDesctop.ViewModels.Acts
         public void Load(Counterparty counterparty, bool isEdit)
         {
             _isEdit = isEdit;
-            if (!_isEdit)
+            if (_isEdit)
             {
                 _counterparty = counterparty;
             }

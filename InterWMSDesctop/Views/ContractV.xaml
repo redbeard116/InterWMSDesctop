@@ -41,18 +41,22 @@
                 <DataGridTextColumn
                     Width="*"
                     Header="ID"
+                    IsReadOnly="True"
                     Binding="{Binding Id}"/>
                 <DataGridTextColumn
                     Width="*"
                     Header="Контрагент"
+                    IsReadOnly="True"
                     Binding="{Binding Counterparty.User.FullName}"/>
                 <DataGridTextColumn
                     Width="*"
                     Header="Дата"
+                    IsReadOnly="True"
                     Binding="{Binding Date, Converter={StaticResource DateConverter}}"/>
                 <DataGridTextColumn
                     Width="*"
                     Header="Сумма"
+                    IsReadOnly="True"
                     Binding="{Binding Sum}"/>
                 
                 <DataGridTemplateColumn

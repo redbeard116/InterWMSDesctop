@@ -56,7 +56,7 @@ namespace InterWMSDesctop.ViewModels
             {
                 var result = _dialogService.OpenEditCounterparty(null);
 
-                if (result != null)
+                if (result == true)
                 {
                     await Load();
                 }
@@ -97,7 +97,7 @@ namespace InterWMSDesctop.ViewModels
             if (obj is Counterparty counterparty)
             {
                 var result = _dialogService.OpenEditCounterparty(counterparty, true);
-                if (result != null)
+                if (result == true)
                 {
                     await Load();
                 }

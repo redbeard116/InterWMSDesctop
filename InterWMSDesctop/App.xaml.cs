@@ -98,13 +98,15 @@ namespace InterWMSDesctop
             services.AddSingleton<IContractService, ContractService>();
             services.AddSingleton<IReportsService, ReportsService>();
             services.AddSingleton<DashboardVM>();
-            services.AddSingleton<IDialogService>(oprions=>
+            services.AddSingleton<IDialogService>(provider=>
             {
                 return new DialogService(DialogCoordinator.Instance,
-                                         oprions.GetService<IUserService>(),
-                                         oprions.GetService<IContractService>(),
-                                         oprions.GetService<ICounterpartyService>(),
-                                         oprions.GetService<DashboardVM>());
+                                         provider.GetService<IUserService>(),
+                                         provider.GetService<IContractService>(),
+                                         provider.GetService<ICounterpartyService>(),
+                                         provider.GetService<IProductService>(),
+                                         provider.GetService<IDictionaryService>(),
+                                         provider.GetService<DashboardVM>());
             });
             services.AddSingleton<UserVM>();
             services.AddSingleton<StorageAreaVM>();
