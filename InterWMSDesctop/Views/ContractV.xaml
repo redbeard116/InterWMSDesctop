@@ -35,7 +35,6 @@
             ColumnWidth="*"
             CanUserAddRows="False"
             AutoGenerateColumns="False"
-            SelectedValue="{Binding SelectContract, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             ItemsSource="{Binding Contracts, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <DataGrid.Columns>
                 <DataGridTextColumn

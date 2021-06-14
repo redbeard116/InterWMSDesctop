@@ -98,7 +98,7 @@ namespace InterWMSDesctop
             services.AddSingleton<IContractService, ContractService>();
             services.AddSingleton<IReportsService, ReportsService>();
             services.AddSingleton<DashboardVM>();
-            services.AddSingleton<IDialogService>(provider=>
+            services.AddSingleton<IDialogService>(provider =>
             {
                 return new DialogService(DialogCoordinator.Instance,
                                          provider.GetService<IUserService>(),
@@ -106,6 +106,8 @@ namespace InterWMSDesctop
                                          provider.GetService<ICounterpartyService>(),
                                          provider.GetService<IProductService>(),
                                          provider.GetService<IDictionaryService>(),
+                                         provider.GetService<IStorageAreaService>(),
+                                         provider.GetService<IProductPriceService>(),
                                          provider.GetService<DashboardVM>());
             });
             services.AddSingleton<UserVM>();

@@ -40,7 +40,7 @@
                     Width="*"
                     Header="ФИО"
                     IsReadOnly="True"
-                    Binding="{Binding User.FullName}"/>
+                    Binding="{Binding FullName}"/>
                 <DataGridTextColumn
                     Width="*"
                     Header="Счет"

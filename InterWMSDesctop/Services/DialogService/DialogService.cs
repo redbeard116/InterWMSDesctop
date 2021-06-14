@@ -2,7 +2,9 @@
 using ApiApp.Services.ContractService;
 using ApiApp.Services.CounterpartyService;
 using ApiApp.Services.DictionaryService;
+using ApiApp.Services.ProductPriceService;
 using ApiApp.Services.ProductService;
+using ApiApp.Services.StorageAreaService;
 using ApiApp.Services.UserService;
 using InterWMSDesctop.ViewModels;
 using InterWMSDesctop.ViewModels.Acts;
@@ -21,6 +23,7 @@ namespace InterWMSDesctop.Services.DialogService
         private readonly ContractActVM _contractVM;
         private readonly CounterpartyActVM _counterpartyActVM;
         private readonly ProductActVM _productActVM;
+        private readonly ProductPriceActVM _productPriceActVM;
         private readonly object _context;
         #endregion
 
@@ -31,14 +34,17 @@ namespace InterWMSDesctop.Services.DialogService
                              ICounterpartyService counterpartyService,
                              IProductService productService,
                              IDictionaryService dictionaryService,
+                             IStorageAreaService storageAreaService,
+                             IProductPriceService productPrice,
                              object context)
         {
             _dialogCoordinator = dialogCoordinator;
             _context = context;
             _userActVM = new UserActVM(userService, this);
-            _contractVM = new ContractActVM(contractService, counterpartyService, this);
+            _contractVM = new ContractActVM(contractService, counterpartyService, productService, productPrice,this);
             _counterpartyActVM = new CounterpartyActVM(counterpartyService, this);
-            _productActVM = new ProductActVM(productService, dictionaryService, this);
+            _productActVM = new ProductActVM(productService, dictionaryService, storageAreaService, this);
+            _productPriceActVM = new ProductPriceActVM(productPrice, productService, this);
         }
         #endregion
 
@@ -88,9 +94,9 @@ namespace InterWMSDesctop.Services.DialogService
             return userActV.ShowDialog();
         }
 
-        public async Task ShowErrorDialog(string message)
+        public async Task ShowErrorDialog(string message, object context = null)
         {
-            await _dialogCoordinator.ShowMessageAsync(_context, "Ошибка", message);
+            await _dialogCoordinator.ShowMessageAsync(context ?? _context, "Ошибка", message);
         }
 
         public async Task<bool?> OpenEditProduct(Product product, bool isEdit = false)
@@ -98,6 +104,18 @@ namespace InterWMSDesctop.Services.DialogService
             await _productActVM.Load(product, isEdit);
 
             var view = new ProductActV
+            {
+                DataContext = _productActVM
+            };
+
+            return view.ShowDialog();
+        }
+
+        public async Task<bool?> OpenEditProductPrice(ProductPrice productPrice, bool isEdit = false)
+        {
+            await _productPriceActVM.Load(productPrice, isEdit);
+
+            var view = new ProductPriceActV
             {
                 DataContext = _productActVM
             };

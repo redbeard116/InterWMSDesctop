@@ -8,8 +8,178 @@
         mc:Ignorable="d"
         Height="450" Width="600"
         WindowStartupLocation="CenterScreen"
+        x:Name="view"
         d:DataContext="{d:DesignInstance viewModels:ContractActVM, d:IsDesignTimeCreatable=false}">
-    <Grid>
-        
+
+    <Grid
+        Margin="10,5,5,5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"
+                           MinHeight="100"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            FontSize="24"
+            HorizontalAlignment="Left">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Text" Value="Изменить контракт"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsEdit}" Value="False">
+                            <Setter Property="Text" Value="Создать контракт"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="0"
+            Text="Сумма:"
+            Margin="0,10,10,0"/>
+        <TextBox
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="0,10,10,0"
+            Text="{Binding Sum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="0"
+            Text="Контрагент:"
+            Margin="0,10,10,0"/>
+        <ComboBox
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="0,10,10,0"
+            SelectedValue="{Binding SelectedCounterparty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ItemsSource="{Binding Counterparties, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            DisplayMemberPath="FullName"/>
+
+        <DataGrid
+            Grid.Row="3"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            ColumnWidth="*"
+            Margin="0,10,10,0"
+            CanUserAddRows="False"
+            AutoGenerateColumns="False"
+            ItemsSource="{Binding AddedProducts, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="*"
+                    Header="Продукт"
+                    IsReadOnly="True"
+                    Binding="{Binding Product.Name}"/>
+                <DataGridTextColumn
+                    Width="*"
+                    Header="Количество"
+                    Binding="{Binding Count}"/>
+
+                <DataGridTemplateColumn
+                    Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button 
+                                Content="Удалить"
+                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.DeleteProductCmd}"
+                                CommandParameter="{Binding}"
+                                Opacity="0.7"
+                                Background="Red"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid
+            Grid.Row="4"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Text="Товар"
+                Margin="0,10,10,0"/>
+            <ComboBox
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="0,10,10,0"
+                SelectedValue="{Binding SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                ItemsSource="{Binding Products, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                DisplayMemberPath="Name"/>
+
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                Text="Количество"
+                Margin="0,10,10,0"/>
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="0,10,10,0"
+                Text="{Binding SelectedProduct.Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Button
+                Grid.Row="1"
+                Grid.Column="2"
+                VerticalAlignment="Bottom"
+                Content="Добавить"
+                Command="{Binding AddProductCmd}"/>
+
+        </Grid>
+
+        <Grid
+            Grid.Row="5"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button
+                Grid.Column="0"
+                VerticalAlignment="Bottom"
+                Content="{Binding ButtonContent}"
+                Command="{Binding ContractActCmd}"
+                CommandParameter="{Binding ElementName=view}"/>
+
+            <Button
+                Grid.Row="6"
+                Grid.Column="1"
+                Margin="5,0,0,0"
+                Content="Закрыть"
+                VerticalAlignment="Bottom"
+                Command="{Binding CloseCmd}"
+                CommandParameter="{Binding ElementName=view}"/>
+        </Grid>
+
     </Grid>
 </mah:MetroWindow>

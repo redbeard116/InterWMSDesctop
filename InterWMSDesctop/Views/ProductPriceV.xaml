@@ -9,7 +9,73 @@
       Title="ProductPriceV"
       d:DataContext="{d:DesignInstance viewModels:ProductPriceVM, d:IsDesignTimeCreatable=false}">
 
-    <Grid>
-        
+    <Grid
+        Margin="10,5,5,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Text="Цены на продукты"
+            FontSize="24"
+            Margin="0,0,0,10"
+            HorizontalAlignment="Left"/>
+
+        <DataGrid
+            Grid.Row="1"
+            ColumnWidth="*"
+            CanUserAddRows="False"
+            AutoGenerateColumns="False"
+            ItemsSource="{Binding ProductPrices, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="*"
+                    Header="Продукт"
+                    IsReadOnly="True"
+                    Binding="{Binding Product.Name}"/>
+                <DataGridTextColumn
+                    Width="*"
+                    Header="Цена"
+                    IsReadOnly="True"
+                    Binding="{Binding Cost}"/>
+                <DataGridTemplateColumn
+                    Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button 
+                                Content="Изменить"
+                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}, Path=DataContext.EditCmd}"
+                                CommandParameter="{Binding}"
+                                Opacity="0.7"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn
+                    Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button 
+                                Content="Удалить"
+                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}, Path=DataContext.DeleteCmd}"
+                                CommandParameter="{Binding}"
+                                Opacity="0.7"
+                                Background="Red"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button
+            Grid.Row="2"
+            Margin="0,5,0,0"
+            HorizontalAlignment="Right"
+            Content="Новая цена"
+            Width="120"
+            Command="{Binding AddCmd}"
+            Background="DeepSkyBlue"/>
     </Grid>
 </Page>

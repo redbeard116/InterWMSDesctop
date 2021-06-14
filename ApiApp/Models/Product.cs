@@ -6,5 +6,7 @@
 
         public int TypeId { get; set; }
         public ProductType ProductType { get; set; }
+        public int StorageAreaId { get; set; }
+        public StorageArea StorageArea { get; set; }
     }
 }

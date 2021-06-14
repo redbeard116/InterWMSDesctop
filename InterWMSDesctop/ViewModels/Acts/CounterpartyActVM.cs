@@ -1,8 +1,6 @@
 ﻿using ApiApp.Models;
 using ApiApp.Services.CounterpartyService;
 using InterWMSDesctop.Services.DialogService;
-using InterWMSDesctop.ViewModels;
-using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -120,7 +118,7 @@ namespace InterWMSDesctop.ViewModels.Acts
             }
             catch (System.Exception ex)
             {
-                await _dialogService.ShowErrorDialog(ex.Message);
+                await _dialogService.ShowErrorDialog(ex.Message, this);
             }
         }
         #endregion

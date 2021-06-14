@@ -46,6 +46,11 @@
                     Header="Тип"
                     IsReadOnly="True"
                     Binding="{Binding ProductType.Name}"/>
+                <DataGridTextColumn
+                    Width="*"
+                    Header="Место"
+                    IsReadOnly="True"
+                    Binding="{Binding StorageArea.Location}"/>
                 <DataGridTemplateColumn
                     Width="*">
                     <DataGridTemplateColumn.CellTemplate>

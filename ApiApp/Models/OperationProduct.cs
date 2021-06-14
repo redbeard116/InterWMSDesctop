@@ -1,12 +1,11 @@
 ﻿namespace ApiApp.Models
 {
-    public class ProductPrice : JsonBase
+    public class OperationProduct
     {
         public int ProductId { get; set; }
 
         public Product Product { get; set; }
 
-        public double Cost { get; set; }
-        public long Date { get; set; }
+        public int Count { get; set; }
     }
 }

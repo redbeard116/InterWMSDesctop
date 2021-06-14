@@ -1,5 +1,6 @@
 ﻿using ApiApp.Models;
 using ApiApp.Services.ProductPriceService;
+using InterWMSDesctop.Services.DialogService;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,33 +11,21 @@ namespace InterWMSDesctop.ViewModels
     {
         #region Fields
         private readonly IProductPriceService _productPriceService;
+        private readonly IDialogService _dialogService;
 
         private IEnumerable<ProductPrice> _productPrices;
-        private ProductPrice _selectProductPrice;
-        private ProductPrice _newProductPrice;
         #endregion
 
         #region Constructor
-        public ProductPriceVM(IProductPriceService productPriceService)
+        public ProductPriceVM(IProductPriceService productPriceService, IDialogService dialogService)
         {
             _productPriceService = productPriceService;
+            _dialogService = dialogService;
         }
         #endregion
 
         #region Properties
         public IEnumerable<ProductPrice> ProductPrices => _productPrices;
-
-        public ProductPrice SelectProductPrice
-        {
-            get => _selectProductPrice;
-            set => OnPropertyChanged(ref _selectProductPrice, value, () => SelectProductPrice);
-        }
-
-        public ProductPrice NewProductPrice
-        {
-            get => _newProductPrice;
-            set => OnPropertyChanged(ref _newProductPrice, value, () => NewProductPrice);
-        }
         #endregion
 
         #region Public methods
@@ -61,12 +50,11 @@ namespace InterWMSDesctop.ViewModels
 
         private async Task Add(object obj)
         {
-            var result = await _productPriceService.AddProductPrice(NewProductPrice);
+            var result = await _dialogService.OpenEditProductPrice(null);
 
             if (result != null)
             {
                 await Load();
-                NewProductPrice = null;
             }
         }
         #endregion
@@ -98,13 +86,12 @@ namespace InterWMSDesctop.ViewModels
 
         private async Task Edit(object obj)
         {
-            if (SelectProductPrice != null)
+            if (obj is ProductPrice productPrice)
             {
-                var result = await _productPriceService.EditProductPrice(SelectProductPrice);
+                var result = await _dialogService.OpenEditProductPrice(productPrice, true);
                 if (result != null)
                 {
                     await Load();
-                    SelectProductPrice = null;
                 }
             }
         }

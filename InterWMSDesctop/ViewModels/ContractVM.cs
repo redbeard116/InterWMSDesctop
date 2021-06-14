@@ -58,11 +58,18 @@ namespace InterWMSDesctop.ViewModels
 
         private async Task Add(object obj)
         {
-            var result = await _dialogService.OpenEditContract(null);
-
-            if (result == true)
+            try
             {
-                await Load();
+                var result = await _dialogService.OpenEditContract(null);
+
+                if (result == true)
+                {
+                    await Load();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                await _dialogService.ShowErrorDialog(ex.Message);
             }
         }
         #endregion

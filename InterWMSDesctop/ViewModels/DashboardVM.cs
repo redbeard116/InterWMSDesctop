@@ -7,8 +7,6 @@ using ApiApp.Services.UserService;
 using MahApps.Metro.IconPacks;
 using InterWMSDesctop.Views;
 using InterWMSDesctop.Services.DialogService;
-using MahApps.Metro.Controls.Dialogs;
-using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace InterWMSDesctop.ViewModels
@@ -52,7 +50,7 @@ namespace InterWMSDesctop.ViewModels
         #region Public Methods
         public override async Task Load()
         {
-            _dialogService = AppServices.Instance.GetService< IDialogService>();
+            _dialogService = AppServices.Instance.GetService<IDialogService>();
             _userVM = AppServices.Instance.GetService<UserVM>();
             _productsTypeVM = AppServices.Instance.GetService<ProductsTypeVM>();
             _storageAreaVM = AppServices.Instance.GetService<StorageAreaVM>();
@@ -62,7 +60,7 @@ namespace InterWMSDesctop.ViewModels
             _contractVM = AppServices.Instance.GetService<ContractVM>();
             _reportsVM = AppServices.Instance.GetService<ReportsVM>();
 
-            _usersVM = AppServices.Instance.GetService<UsersVM>(); 
+            _usersVM = AppServices.Instance.GetService<UsersVM>();
 
             Menu.Add(new MenuItem()
             {
@@ -93,7 +91,7 @@ namespace InterWMSDesctop.ViewModels
 
             Menu.Add(new MenuItem()
             {
-                Icon = new PackIconFeatherIcons() { Kind = PackIconFeatherIconsKind.Command },
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.AccountMultipleOutline },
                 Label = "Контрагенты",
                 NavigationType = typeof(CounterpartyesV),
                 DataContext = _counterpartyesVM,
@@ -102,7 +100,7 @@ namespace InterWMSDesctop.ViewModels
 
             Menu.Add(new MenuItem()
             {
-                Icon = new PackIconFeatherIcons() { Kind = PackIconFeatherIconsKind.Airplay },
+                Icon = new PackIconIonicons() { Kind = PackIconIoniconsKind.CardMD },
                 Label = "Цены",
                 NavigationType = typeof(ProductPriceV),
                 DataContext = _productPriceVM,
@@ -111,7 +109,7 @@ namespace InterWMSDesctop.ViewModels
 
             Menu.Add(new MenuItem()
             {
-                Icon = new PackIconFeatherIcons() { Kind = PackIconFeatherIconsKind.Package },
+                Icon = new PackIconSimpleIcons() { Kind = PackIconSimpleIconsKind.MicrosoftOneNote },
                 Label = "Товары",
                 NavigationType = typeof(ProductV),
                 DataContext = _productVM,
@@ -120,7 +118,7 @@ namespace InterWMSDesctop.ViewModels
 
             Menu.Add(new MenuItem()
             {
-                Icon = new PackIconFeatherIcons() { Kind = PackIconFeatherIconsKind.Coffee },
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FileDocumentEditOutline },
                 Label = "Договора",
                 NavigationType = typeof(ContractV),
                 DataContext = _contractVM,
@@ -129,7 +127,7 @@ namespace InterWMSDesctop.ViewModels
 
             OptionsMenu.Add(new MenuItem()
             {
-                Icon = new PackIconFeatherIcons() { Kind = PackIconFeatherIconsKind.Repeat },
+                Icon = new PackIconForkAwesome() { Kind = PackIconForkAwesomeKind.BarChart },
                 Label = "Отчеты",
                 NavigationType = typeof(ReportsV),
                 DataContext = _reportsVM,
@@ -155,15 +153,22 @@ namespace InterWMSDesctop.ViewModels
 
         public async Task LoadItems()
         {
-            _menuTimer.Stop();
-            if (SelectedMenuItem == null)
+            try
             {
-                return;
-            }
+                _menuTimer.Stop();
+                if (SelectedMenuItem == null)
+                {
+                    return;
+                }
 
-            if (SelectedMenuItem.DataContext is ViewModelBase modelBase)
+                if (SelectedMenuItem.DataContext is ViewModelBase modelBase)
+                {
+                    await modelBase.Load();
+                }
+            }
+            catch (Exception ex)
             {
-                await modelBase.Load();
+                _dialogService.ShowErrorDialog(ex.Message);
             }
         }
 

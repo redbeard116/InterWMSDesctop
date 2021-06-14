@@ -1,8 +1,10 @@
 ﻿using ApiApp.Models;
 using ApiApp.Services.DictionaryService;
 using ApiApp.Services.ProductService;
+using ApiApp.Services.StorageAreaService;
 using InterWMSDesctop.Services.DialogService;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,20 +18,26 @@ namespace InterWMSDesctop.ViewModels.Acts
         private readonly IProductService _productService;
         private readonly IDictionaryService _dictionaryService;
         private readonly IDialogService _dialogService;
+        private readonly IStorageAreaService _storageAreaService;
 
         private Product _product;
         private bool _isEdit;
         private IEnumerable<ProductType> _productTypes;
         private string _name;
         private ProductType _productType;
+        private StorageArea _selectedStorageArea;
         #endregion
 
         #region Constructor
-        public ProductActVM(IProductService productService, IDictionaryService dictionaryService, IDialogService dialogService)
+        public ProductActVM(IProductService productService,
+                            IDictionaryService dictionaryService,
+                            IStorageAreaService storageAreaService,
+                            IDialogService dialogService)
         {
             _productService = productService;
             _dictionaryService = dictionaryService;
             _dialogService = dialogService;
+            _storageAreaService = storageAreaService;
         }
         #endregion
 
@@ -47,17 +55,27 @@ namespace InterWMSDesctop.ViewModels.Acts
             get => _productType;
             set => OnPropertyChanged(ref _productType, value, () => SelectType);
         }
-        #endregion
 
+        public StorageArea SelectedStorageArea
+        {
+            get => _selectedStorageArea;
+            set => OnPropertyChanged(ref _selectedStorageArea, value, () => SelectedStorageArea);
+        }
+
+        public ObservableCollection<StorageArea> StorageAreas { get; set; }
+        #endregion
 
         #region Public methods
         public async Task Load(Product product, bool isEdit)
         {
             _isEdit = isEdit;
             _productTypes = await _dictionaryService.GetProductTypes();
+            var storageAreas = await _storageAreaService.GetStorageAreas();
+            StorageAreas = new ObservableCollection<StorageArea>(storageAreas);
             if (IsEdit)
             {
                 _product = product;
+                SelectedStorageArea = StorageAreas.FirstOrDefault(w => w.Id == _product.StorageAreaId);
             }
             else
             {
@@ -91,7 +109,7 @@ namespace InterWMSDesctop.ViewModels.Acts
                 {
                     _product.Name = Name;
                     _product.TypeId = SelectType.Id;
-
+                    _product.StorageAreaId = SelectedStorageArea.Id;
                     if (IsEdit)
                     {
                         await _productService.EditProduct(_product);
@@ -101,7 +119,7 @@ namespace InterWMSDesctop.ViewModels.Acts
                         await _productService.AddProduct(_product);
                     }
 
-                    window.DialogResult = false;
+                    window.DialogResult = true;
                 }
             }
             catch (System.Exception ex)
