@@ -20,6 +20,8 @@ namespace InterWMSDesctop.ViewModels.Acts
         private int _iNN;
         private string _firstName;
         private string _secondName;
+        private string _number;
+        private string _middleName;
         #endregion
 
         #region Constructor
@@ -54,6 +56,16 @@ namespace InterWMSDesctop.ViewModels.Acts
             get => _secondName;
             set => OnPropertyChanged(ref _secondName, value, () => SecondName);
         }
+        public string Number
+        {
+            get => _number;
+            set => OnPropertyChanged(ref _number, value, () => Number);
+        }
+        public string MiddleName
+        {
+            get => _middleName;
+            set => OnPropertyChanged(ref _middleName, value, () => MiddleName);
+        }
 
         public string ButtonContent => IsEdit ? "Применить" : "Создать";
         #endregion
@@ -80,6 +92,8 @@ namespace InterWMSDesctop.ViewModels.Acts
             INN = _counterparty.INN;
             FirstName = _counterparty?.User?.FirstName;
             SecondName = _counterparty?.User?.SecondName;
+            Number = _counterparty?.User?.Number;
+            MiddleName = _counterparty?.User?.MiddleName;
 
             OnPropertyChanged(() => IsEdit);
         }
@@ -103,6 +117,8 @@ namespace InterWMSDesctop.ViewModels.Acts
                     _counterparty.INN = INN;
                     _counterparty.User.FirstName = FirstName;
                     _counterparty.User.SecondName = SecondName;
+                    _counterparty.User.Number = Number;
+                    _counterparty.User.MiddleName = MiddleName;
 
                     if (IsEdit)
                     {
@@ -113,7 +129,7 @@ namespace InterWMSDesctop.ViewModels.Acts
                         await _counterpartyService.AddCounterparty(_counterparty);
                     }
 
-                    window.DialogResult = false;
+                    window.DialogResult = true;
                 }
             }
             catch (System.Exception ex)

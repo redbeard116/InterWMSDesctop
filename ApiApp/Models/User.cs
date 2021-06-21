@@ -11,7 +11,8 @@ namespace ApiApp.Models
         public string Password { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public UserRole Role { get; set; }
-
+        public string Number { get; set; }
+        public string MiddleName { get; set; }
         public override bool HasValue => GetHasValue();
 
         private bool GetHasValue()

@@ -24,6 +24,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -70,28 +72,50 @@
         <TextBlock
             Grid.Row="3"
             Grid.Column="0"
-            Text="Инн:"
+            Text="Отчество:"
             Margin="0,10,10,0"/>
         <TextBox
             Grid.Row="3"
             Grid.Column="1"
             Margin="0,10,10,0"
-            Text="{Binding INN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding MiddleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock
             Grid.Row="4"
             Grid.Column="0"
-            Text="Счет:"
+            Text="Номер:"
             Margin="0,10,10,0"/>
         <TextBox
             Grid.Row="4"
+            Grid.Column="1"
+            Margin="0,10,10,0"
+            Text="{Binding Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock
+            Grid.Row="5"
+            Grid.Column="0"
+            Text="Инн:"
+            Margin="0,10,10,0"/>
+        <TextBox
+            Grid.Row="5"
+            Grid.Column="1"
+            Margin="0,10,10,0"
+            Text="{Binding INN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock
+            Grid.Row="6"
+            Grid.Column="0"
+            Text="Счет:"
+            Margin="0,10,10,0"/>
+        <TextBox
+            Grid.Row="6"
             Grid.Column="1"
             Margin="0,10,10,0"
             Text="{Binding Account, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
 
         <Grid
-            Grid.Row="5"
+            Grid.Row="7"
             Grid.Column="0"
             Grid.ColumnSpan="2"
             Margin="5">

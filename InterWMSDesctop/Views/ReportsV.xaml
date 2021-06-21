@@ -4,12 +4,191 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:viewModels="clr-namespace:InterWMSDesctop.ViewModels"
+      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:charts="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ReportsV"
       d:DataContext="{d:DesignInstance viewModels:ReportsVM, d:IsDesignTimeCreatable=false}">
 
-    <Grid>
-        
+    <Grid
+        Margin="10,5,5,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Text="Отчеты"
+            FontSize="24"
+            Margin="0,0,0,10"
+            HorizontalAlignment="Left"/>
+
+        <GroupBox
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="5,0,0,0"
+            Header="Отчет по проданным товарам">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="От:"/>
+                <controls:DateTimePicker
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Culture="ru-RU"
+                    SelectedDateTime="{Binding StartSaleDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="До:"
+                    Margin="0,2,0,0"/>
+                <controls:DateTimePicker
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Culture="ru-RU"
+                    Margin="0,2,0,0"
+                    SelectedDateTime="{Binding EndSaleDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Button
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Content="Сформировать"
+                    Margin="0,2,0,0"
+                    Command="{Binding CreateSaleReportCmd}"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox
+            Grid.Row="1"
+            Grid.Column="1"
+            Header="Отчет по принятым товарам">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="От:"/>
+                <controls:DateTimePicker
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Culture="ru-RU"
+                    Margin="0,2,0,0"
+                    DisplayDate="{Binding StartPurchaseDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedDateTime="{Binding StartPurchaseDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="До:"/>
+                <controls:DateTimePicker
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Culture="ru-RU"
+                    Margin="0,2,0,0"
+                    SelectedDateTime="{Binding EndPurchaseDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Button
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="0,2,0,0"
+                    Content="Сформировать"
+                    Command="{Binding CreatePurchaseReportCmd}"/>
+            </Grid>
+        </GroupBox>
+
+        <Grid
+            Grid.Row="2"
+            Margin="0,5,0,0"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            x:Name="report">
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Results}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <charts:CartesianChart
+                DataClickCommand="{Binding FullReportProductCmd}">
+                <charts:CartesianChart.Series>
+                    <charts:ColumnSeries
+                        Title="Общее количество:"
+                        Values="{Binding Results}"
+                        Configuration="{Binding Mapper}"/>
+                </charts:CartesianChart.Series>
+
+                <charts:CartesianChart.AxisX>
+                    <charts:Axis 
+                        LabelsRotation="-20"
+                        Labels="{Binding Labels}"
+                        DisableAnimations="False">
+                        <charts:Axis.Separator>
+                            <charts:Separator Step="1"/>
+                        </charts:Axis.Separator>
+                    </charts:Axis>
+                </charts:CartesianChart.AxisX>
+            </charts:CartesianChart>
+
+            <TextBlock
+                Grid.Row="1"
+                Text="{Binding Title}"
+                HorizontalAlignment="Center"/>
+
+        </Grid>
+
+        <Button
+            Grid.Row="3"
+            Grid.Column="1"
+            HorizontalAlignment="Right"
+            Content="Экспортировать отчет"
+            Visibility="{Binding ElementName=report, Path=Visibility}"
+            Command="{Binding SaveExcelCmd}"/>
+
     </Grid>
 </Page>

@@ -29,9 +29,10 @@ namespace InterWMSDesctop.ViewModels.Acts
         private Contract _contract;
         private Counterparty _selectedCounterparty;
         private double _sum;
-        private OperationType _selectedType;
+        private string _selectedType;
+        private IEnumerable<string> _types;
         private ProductM _selectedProduct;
-        private IEnumerable<ProductPrice> _productPrices;
+        private IEnumerable<ProductInfo> _productInfos;
         #endregion
 
         #region Constructor
@@ -65,11 +66,16 @@ namespace InterWMSDesctop.ViewModels.Acts
             set => OnPropertyChanged(ref _selectedProduct, value, () => SelectedProduct);
         }
         public ObservableCollection<ProductM> Products { get; set; }
-        public OperationType SelectedType
+        public string SelectedType
         {
             get => _selectedType;
-            set => OnPropertyChanged(ref _selectedType, value, () => SelectedType);
+            set
+            {
+                OnPropertyChanged(ref _selectedType, value, () => SelectedType);
+                Products.ToList().ForEach(w => w.SetOperationType(_selectedType == "Прием" ? OperationType.Reception : OperationType.Shipping));
+            }
         }
+        public IEnumerable<string> Types => _types;
         public string ButtonContent => IsEdit ? "Применить" : "Создать";
         #endregion
 
@@ -79,25 +85,31 @@ namespace InterWMSDesctop.ViewModels.Acts
             _isEdit = isEdit;
             var counterparties = await _counterpartyService.GetCounterpartyes();
             var products = await _productService.GetProducts();
-            _productPrices = await _productPriceService.GetLastPrices();
+            _productInfos = await _productPriceService.GetLastPrices();
             Counterparties = new ObservableCollection<Counterparty>(counterparties);
-            Products = new ObservableCollection<ProductM>(products.Select(w => new ProductM(w)));
+            Products = new ObservableCollection<ProductM>(products.Select(w => new ProductM(w, _productInfos.FirstOrDefault(p => p.ProductId == w.Id))));
             AddedProducts = new ObservableCollection<OperationProduct>();
+            _types = new List<string>
+            {
+                "Прием",
+                "Огрузка"
+            };
+
             if (IsEdit)
             {
                 _contract = contract;
                 AddedProducts = new ObservableCollection<OperationProduct>(_contract.Products);
-                SelectedType = _contract.Type;
-                SelectedCounterparty = _contract.Counterparty;
+                SelectedType = _types.FirstOrDefault(w => w.Equals(_contract.Type == OperationType.Reception ? "Прием" : "Огрузка"));
+                SelectedCounterparty = Counterparties.FirstOrDefault(w => w.Id == _contract.Counterparty.Id);
             }
             else
             {
                 _contract = new Contract();
             }
 
-            SelectedCounterparty = _contract.Counterparty;
             Sum = _contract.Sum;
 
+            OnPropertyChanged(() => Types);
             OnPropertyChanged(() => IsEdit);
         }
         #endregion
@@ -108,7 +120,12 @@ namespace InterWMSDesctop.ViewModels.Acts
         private ICommand _contractActCmd;
 
         public ICommand ContractActCmd
-            => _contractActCmd ?? (_contractActCmd = new AsyncCommand(ContractAct));
+            => _contractActCmd ?? (_contractActCmd = new AsyncCommand(ContractAct, CanContractAct));
+
+        private bool CanContractAct(object obj)
+        {
+            return AddedProducts.Count() > 0;
+        }
 
         private async Task ContractAct(object obj)
         {
@@ -119,7 +136,7 @@ namespace InterWMSDesctop.ViewModels.Acts
                     _contract.Date = DateTime.Now.GetUnixTime();
                     _contract.Counterparty = SelectedCounterparty;
                     _contract.Sum = Sum;
-                    _contract.Type = SelectedType;
+                    _contract.Type = SelectedType == "Прием" ? OperationType.Reception : OperationType.Shipping;
                     _contract.Products = AddedProducts.ToList();
 
                     if (IsEdit)
@@ -131,7 +148,7 @@ namespace InterWMSDesctop.ViewModels.Acts
                         await _contractService.AddContract(_contract);
                     }
 
-                    window.DialogResult = false;
+                    window.DialogResult = true;
                 }
             }
             catch (System.Exception ex)
@@ -149,7 +166,7 @@ namespace InterWMSDesctop.ViewModels.Acts
 
         private bool CanAddProduct(object obj)
         {
-            return SelectedProduct != null;
+            return SelectedProduct != null && SelectedProduct?.Count > 0;
         }
 
         private void AddProduct(object obj)
@@ -163,9 +180,10 @@ namespace InterWMSDesctop.ViewModels.Acts
             {
                 Product = SelectedProduct.Product,
                 ProductId = SelectedProduct.Id,
-                Count = SelectedProduct.Count
+                Count = SelectedProduct.Count,
+                Sum = SelectedProduct.Sum,
             });
-            Sum += SelectedProduct.Count * _productPrices.FirstOrDefault(w => w.ProductId == SelectedProduct.Id).Cost;
+            Sum += SelectedProduct.Sum;
             SelectedProduct = null;
             OnPropertyChanged(() => AddedProducts);
         }
@@ -191,7 +209,7 @@ namespace InterWMSDesctop.ViewModels.Acts
 
             var product = obj as OperationProduct;
             AddedProducts.Remove(obj as OperationProduct);
-            Sum -= product.Count * _productPrices.FirstOrDefault(w => w.ProductId == product.ProductId).Cost;
+            Sum -= product.Sum;
             OnPropertyChanged(() => AddedProducts);
         }
         #endregion
@@ -208,7 +226,7 @@ namespace InterWMSDesctop.ViewModels.Acts
 
             if (obj is Window window)
             {
-                window.DialogResult = false;
+                window.Close();
             }
         }
         #endregion

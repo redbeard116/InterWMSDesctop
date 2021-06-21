@@ -13,6 +13,6 @@ namespace ApiApp.Services.ProductPriceService
         Task<ProductPrice> AddProductPrice(ProductPrice productPrice);
         Task<bool> DeleteProductPrice(int id);
         Task<ProductPrice> EditProductPrice(ProductPrice productPrice);
-        Task<IEnumerable<ProductPrice>> GetLastPrices();
+        Task<IEnumerable<ProductInfo>> GetLastPrices();
     }
 }

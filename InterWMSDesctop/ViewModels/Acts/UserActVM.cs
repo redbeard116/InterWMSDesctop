@@ -18,6 +18,8 @@ namespace InterWMSDesctop.ViewModels
         private string _firstName;
         private string _secondName;
         private string _login;
+        private string _number;
+        private string _middleName;
         #endregion
 
         #region Constructor
@@ -45,6 +47,8 @@ namespace InterWMSDesctop.ViewModels
             SecondName = _currUser.SecondName;
             Login = _currUser.Login;
             SelectedRole = _currUser.Role;
+            Number = _currUser.Number;
+            MiddleName = _currUser.MiddleName;
             OnPropertyChanged(nameof(IsEdit));
         }
         #endregion
@@ -70,6 +74,16 @@ namespace InterWMSDesctop.ViewModels
         {
             get => _login;
             set => OnPropertyChanged(ref _login, value, () => FirstName);
+        }
+        public string Number
+        {
+            get => _number;
+            set => OnPropertyChanged(ref _number, value, () => Number);
+        }
+        public string MiddleName
+        {
+            get => _middleName;
+            set => OnPropertyChanged(ref _middleName, value, () => MiddleName);
         }
         #endregion
         public bool IsEdit => _isEdit;
@@ -101,6 +115,8 @@ namespace InterWMSDesctop.ViewModels
                     _currUser.FirstName = FirstName;
                     _currUser.SecondName = SecondName;
                     _currUser.Login = Login;
+                    _currUser.Number = Number;
+                    _currUser.MiddleName = MiddleName;
 
                     if (IsEdit)
                     {

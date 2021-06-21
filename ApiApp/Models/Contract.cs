@@ -19,9 +19,7 @@ namespace ApiApp.Models
 
     public enum OperationType
     {
-        [Description("Прием")]
         Reception,
-        [Description("Shipping")]
         Shipping
     }
 }

@@ -9,6 +9,7 @@
                  xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
                  mc:Ignorable="d"
                  FontSize="16"
+                 WindowState="Maximized"
                  WindowStartupLocation="CenterScreen"
                  Title="Главное окно" Height="450" Width="800"
                  Dialog:DialogParticipation.Register="{Binding}"

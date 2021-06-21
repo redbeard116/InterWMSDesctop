@@ -1,6 +1,8 @@
 ﻿using ApiApp.Models;
 using ApiApp.Services.ContractService;
+using InterWMSDesctop.Services;
 using InterWMSDesctop.Services.DialogService;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,7 +16,7 @@ namespace InterWMSDesctop.ViewModels
         private readonly IDialogService _dialogService;
 
         private IEnumerable<Contract> _contracts;
-        private Contract _newOperation;
+        private Contract _selectedContract;
         #endregion
 
         #region Constructor
@@ -29,10 +31,10 @@ namespace InterWMSDesctop.ViewModels
         #region Properties
         public IEnumerable<Contract> Contracts => _contracts;
 
-        public Contract NewContract
+        public Contract SelectedContract
         {
-            get => _newOperation;
-            set => OnPropertyChanged(ref _newOperation, value, () => NewContract);
+            get => _selectedContract;
+            set => OnPropertyChanged(ref _selectedContract, value, () => SelectedContract);
         }
         #endregion
 
@@ -108,6 +110,36 @@ namespace InterWMSDesctop.ViewModels
                 {
                     await Load();
                 }
+            }
+        }
+        #endregion
+
+        #region SaveExcelCmd
+        private ICommand _saveExcelCmd;
+
+        public ICommand SaveExcelCmd
+            => _saveExcelCmd ?? (_saveExcelCmd = new AsyncCommand(SaveExcel, CanSaveExcel));
+
+        private bool CanSaveExcel(object obj)
+        {
+            return SelectedContract != null;
+        }
+
+        private async Task SaveExcel(object obj)
+        {
+            try
+            {
+                if (!CanSaveExcel(obj))
+                {
+                    return;
+                }
+
+                var excel = new ExcelTemplateService();
+                excel.SaveContract(SelectedContract);
+            }
+            catch (Exception ex)
+            {
+                await _dialogService.ShowErrorDialog(ex.Message);
             }
         }
         #endregion

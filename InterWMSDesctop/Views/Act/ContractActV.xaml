@@ -21,6 +21,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"
                            MinHeight="100"/>
             <RowDefinition Height="Auto"/>
@@ -66,11 +67,24 @@
             Grid.Column="1"
             Margin="0,10,10,0"
             SelectedValue="{Binding SelectedCounterparty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            ItemsSource="{Binding Counterparties, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ItemsSource="{Binding Counterparties, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             DisplayMemberPath="FullName"/>
 
-        <DataGrid
+
+        <TextBlock
             Grid.Row="3"
+            Grid.Column="0"
+            Text="Тип:"
+            Margin="0,10,10,0"/>
+        <ComboBox
+            Grid.Row="3"
+            Grid.Column="1"
+            Margin="0,10,10,0"
+            SelectedValue="{Binding SelectedType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ItemsSource="{Binding Types, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <DataGrid
+            Grid.Row="4"
             Grid.Column="0"
             Grid.ColumnSpan="2"
             ColumnWidth="*"
@@ -88,6 +102,10 @@
                     Width="*"
                     Header="Количество"
                     Binding="{Binding Count}"/>
+                <DataGridTextColumn
+                    Width="*"
+                    Header="Сумма"
+                    Binding="{Binding Sum}"/>
 
                 <DataGridTemplateColumn
                     Width="*">
@@ -106,14 +124,21 @@
         </DataGrid>
 
         <Grid
-            Grid.Row="4"
+            Grid.Row="5"
             Grid.Column="0"
             Grid.ColumnSpan="2"
             Margin="5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"
+                                  MinWidth="120"/>
+                <ColumnDefinition Width="Auto"
+                                  MinWidth="100"/>
+                <ColumnDefinition Width="Auto"
+                                  MinWidth="100"/>
+                <ColumnDefinition Width="Auto"
+                                  MinWidth="100"/>
+                <ColumnDefinition Width="Auto"
+                                  MinWidth="100"/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
@@ -143,19 +168,59 @@
                 Grid.Row="1"
                 Grid.Column="1"
                 Margin="0,10,10,0"
-                Text="{Binding SelectedProduct.Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Text="{Binding SelectedProduct.Count, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="2"
+                Text="Цена"
+                Margin="0,10,10,0"
+                x:Name="price">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedProduct.OperationType}" Value="Shipping">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            
+            
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="2"
+                Margin="0,10,10,0"
+                Visibility="{Binding ElementName=price, Path=Visibility}"
+                Text="{Binding SelectedProduct.Cost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="3"
+                Text="Сумма"
+                Margin="0,10,10,0"/>
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="3"
+                VerticalAlignment="Center"
+                Margin="0,10,10,0"
+                Text="{Binding SelectedProduct.Sum, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0} руб.'}"/>
 
             <Button
                 Grid.Row="1"
-                Grid.Column="2"
+                Grid.Column="4"
                 VerticalAlignment="Bottom"
                 Content="Добавить"
+                HorizontalAlignment="Right"
                 Command="{Binding AddProductCmd}"/>
 
         </Grid>
 
         <Grid
-            Grid.Row="5"
+            Grid.Row="6"
             Grid.Column="0"
             Grid.ColumnSpan="2"
             Margin="5">

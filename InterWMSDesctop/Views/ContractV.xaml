@@ -35,6 +35,7 @@
             ColumnWidth="*"
             CanUserAddRows="False"
             AutoGenerateColumns="False"
+            SelectedValue="{Binding SelectedContract, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             ItemsSource="{Binding Contracts, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <DataGrid.Columns>
                 <DataGridTextColumn
@@ -46,7 +47,7 @@
                     Width="*"
                     Header="Контрагент"
                     IsReadOnly="True"
-                    Binding="{Binding Counterparty.User.FullName}"/>
+                    Binding="{Binding Counterparty.FullName}"/>
                 <DataGridTextColumn
                     Width="*"
                     Header="Дата"
@@ -88,13 +89,25 @@
         </DataGrid>
 
 
-        <Button
+        <StackPanel
             Grid.Row="2"
             Margin="0,5,0,0"
             HorizontalAlignment="Right"
-            Content="Новый договор"
-            Width="120"
-            Command="{Binding AddCmd}"
-            Background="DeepSkyBlue"/>
+            Orientation="Horizontal">
+
+            <Button
+                Content="Экспортировать договор"
+                Width="170"
+                Command="{Binding SaveExcelCmd}"
+                Background="DeepSkyBlue"/>
+
+            <Button
+                Margin="5,0,0,0"
+                Content="Новый договор"
+                Width="120"
+                Command="{Binding AddCmd}"
+                Background="DeepSkyBlue"/>
+        </StackPanel>
+
     </Grid>
 </Page>

@@ -6,7 +6,6 @@
         xmlns:viewModels="clr-namespace:InterWMSDesctop.ViewModels.Acts"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="ProductPriceV"
         Height="450" Width="600"
         x:Name="view"
         WindowStartupLocation="CenterScreen"

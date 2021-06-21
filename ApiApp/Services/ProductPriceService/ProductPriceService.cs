@@ -68,13 +68,13 @@ namespace ApiApp.Services.ProductPriceService
             }
         }
 
-        public async Task<IEnumerable<ProductPrice>> GetLastPrices()
+        public async Task<IEnumerable<ProductInfo>> GetLastPrices()
         {
             try
             {
                 _logger.LogInformation("Get last product prices");
                 var result = await _requestProvider.GetJsonString("api/prices/last");
-                var json = JsonConvert.DeserializeObject<IEnumerable<ProductPrice>>(result);
+                var json = JsonConvert.DeserializeObject<IEnumerable<ProductInfo>>(result);
                 return json;
             }
             catch (Exception ex)

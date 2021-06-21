@@ -60,7 +60,7 @@ namespace ApiApp.Services.UserService
             _logger.LogInformation($"EditUser {user.Id}");
             try
             {
-                return await _requestProvider.PutJson<User>($"api/users/edit", user.ToJson());
+                return await _requestProvider.PutJson<User>($"api/users/edit/{user.Id}", user.ToJson());
             }
             catch (System.Exception ex)
             {
