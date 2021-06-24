@@ -6,13 +6,14 @@ using System;
 using ApiApp.Extensions;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
 
 namespace InterWMSDesctop.ViewModels.Acts
 {
-    class ProductPriceActVM : ViewModelBase
+    class PriceActVM : ViewModelBase
     {
         #region Fields
         private readonly IProductPriceService _productPriceService;
@@ -27,9 +28,9 @@ namespace InterWMSDesctop.ViewModels.Acts
         #endregion
 
         #region Constructor
-        public ProductPriceActVM(IProductPriceService productPriceService,
-                                 IProductService productService,
-                                 IDialogService dialogService)
+        public PriceActVM(IProductPriceService productPriceService,
+                          IProductService productService,
+                          IDialogService dialogService)
         {
             _productPriceService = productPriceService;
             _productService = productService;
@@ -70,11 +71,13 @@ namespace InterWMSDesctop.ViewModels.Acts
                 _productPrice = productPrice;
                 _date = _productPrice.Date.GetNormalTime();
                 SelectedProduct = Products.FirstOrDefault(w => w.Id == _productPrice.ProductId);
+                Cost = _productPrice.Cost;
             }
             else
             {
                 _productPrice = new ProductPrice();
                 _date = DateTime.Now;
+                Cost = 0;
             }
 
 

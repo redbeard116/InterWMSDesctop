@@ -13,6 +13,7 @@ using System.Linq;
 using InterWMSDesctop.Models;
 using ApiApp.Services.ProductPriceService;
 using System.Collections.Generic;
+using ApiApp.Providers.UserProvider;
 
 namespace InterWMSDesctop.ViewModels.Acts
 {
@@ -24,6 +25,7 @@ namespace InterWMSDesctop.ViewModels.Acts
         private readonly IProductService _productService;
         private readonly IDialogService _dialogService;
         private readonly IProductPriceService _productPriceService;
+        private readonly IUserProvider _userProvider;
 
         private bool _isEdit;
         private Contract _contract;
@@ -36,12 +38,18 @@ namespace InterWMSDesctop.ViewModels.Acts
         #endregion
 
         #region Constructor
-        public ContractActVM(IContractService contractService, ICounterpartyService counterpartyService, IProductService productService, IProductPriceService productPriceService, IDialogService dialogService)
+        public ContractActVM(IContractService contractService,
+                             ICounterpartyService counterpartyService,
+                             IProductService productService,
+                             IProductPriceService productPriceService,
+                             IUserProvider userProvider,
+                             IDialogService dialogService)
         {
             _contractService = contractService;
             _counterpartyService = counterpartyService;
             _productService = productService;
             _productPriceService = productPriceService;
+            _userProvider = userProvider;
             _dialogService = dialogService;
         }
         #endregion
@@ -77,6 +85,8 @@ namespace InterWMSDesctop.ViewModels.Acts
         }
         public IEnumerable<string> Types => _types;
         public string ButtonContent => IsEdit ? "Применить" : "Создать";
+
+        public bool EnableTypes => _userProvider.Role != UserRole.Manager;
         #endregion
 
         #region Public methods
@@ -107,10 +117,16 @@ namespace InterWMSDesctop.ViewModels.Acts
                 _contract = new Contract();
             }
 
+            if (_userProvider.Role == UserRole.Manager)
+            {
+                SelectedType = "Прием";
+            }
+
             Sum = _contract.Sum;
 
             OnPropertyChanged(() => Types);
             OnPropertyChanged(() => IsEdit);
+            OnPropertyChanged(()=>EnableTypes);
         }
         #endregion
 

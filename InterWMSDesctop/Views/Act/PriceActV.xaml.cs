@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace InterWMSDesctop.Views.Act
 {
     /// <summary>
-    /// Логика взаимодействия для ProductPriceActV.xaml
+    /// Логика взаимодействия для PriceActV.xaml
     /// </summary>
-    public partial class ProductPriceActV : MetroWindow
+    public partial class PriceActV : MetroWindow
     {
-        public ProductPriceActV()
+        public PriceActV()
         {
             InitializeComponent();
         }

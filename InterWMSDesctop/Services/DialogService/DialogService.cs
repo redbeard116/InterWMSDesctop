@@ -1,4 +1,5 @@
 ﻿using ApiApp.Models;
+using ApiApp.Providers.UserProvider;
 using ApiApp.Services.ContractService;
 using ApiApp.Services.CounterpartyService;
 using ApiApp.Services.DictionaryService;
@@ -23,7 +24,7 @@ namespace InterWMSDesctop.Services.DialogService
         private readonly ContractActVM _contractVM;
         private readonly CounterpartyActVM _counterpartyActVM;
         private readonly ProductActVM _productActVM;
-        private readonly ProductPriceActVM _productPriceActVM;
+        private readonly PriceActVM _productPriceActVM;
         private readonly object _context;
         #endregion
 
@@ -36,15 +37,16 @@ namespace InterWMSDesctop.Services.DialogService
                              IDictionaryService dictionaryService,
                              IStorageAreaService storageAreaService,
                              IProductPriceService productPrice,
+                             IUserProvider userProvider,
                              object context)
         {
             _dialogCoordinator = dialogCoordinator;
             _context = context;
             _userActVM = new UserActVM(userService, this);
-            _contractVM = new ContractActVM(contractService, counterpartyService, productService, productPrice,this);
+            _contractVM = new ContractActVM(contractService, counterpartyService, productService, productPrice, userProvider, this);
             _counterpartyActVM = new CounterpartyActVM(counterpartyService, this);
             _productActVM = new ProductActVM(productService, dictionaryService, storageAreaService, this);
-            _productPriceActVM = new ProductPriceActVM(productPrice, productService, this);
+            _productPriceActVM = new PriceActVM(productPrice, productService, this);
         }
         #endregion
 
@@ -115,9 +117,9 @@ namespace InterWMSDesctop.Services.DialogService
         {
             await _productPriceActVM.Load(productPrice, isEdit);
 
-            var view = new ProductPriceActV
+            var view = new PriceActV
             {
-                DataContext = _productActVM
+                DataContext = _productPriceActVM
             };
 
             return view.ShowDialog();

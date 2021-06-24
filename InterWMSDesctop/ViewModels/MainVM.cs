@@ -51,7 +51,7 @@ namespace InterWMSDesctop.ViewModels
 
         private async Task Continue(object obj)
         {
-            Password = "admin";// (obj as PasswordBox).Password;
+            Password = (obj as PasswordBox).Password;
 
             try
             {

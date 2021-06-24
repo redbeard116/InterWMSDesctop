@@ -108,6 +108,7 @@ namespace InterWMSDesctop
                                          provider.GetService<IDictionaryService>(),
                                          provider.GetService<IStorageAreaService>(),
                                          provider.GetService<IProductPriceService>(),
+                                         provider.GetService<IUserProvider>(),
                                          provider.GetService<DashboardVM>());
             });
             services.AddSingleton<UserVM>();

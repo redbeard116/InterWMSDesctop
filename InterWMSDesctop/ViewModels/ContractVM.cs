@@ -1,4 +1,5 @@
 ﻿using ApiApp.Models;
+using ApiApp.Providers.UserProvider;
 using ApiApp.Services.ContractService;
 using InterWMSDesctop.Services;
 using InterWMSDesctop.Services.DialogService;
@@ -13,6 +14,7 @@ namespace InterWMSDesctop.ViewModels
     {
         #region Fields
         private readonly IContractService _contractService;
+        private readonly IUserProvider _userProvider;
         private readonly IDialogService _dialogService;
 
         private IEnumerable<Contract> _contracts;
@@ -21,9 +23,11 @@ namespace InterWMSDesctop.ViewModels
 
         #region Constructor
         public ContractVM(IContractService contractService,
+                          IUserProvider userProvider,
                           IDialogService dialogService)
         {
             _contractService = contractService;
+            _userProvider = userProvider;
             _dialogService = dialogService;
         }
         #endregion
@@ -99,7 +103,21 @@ namespace InterWMSDesctop.ViewModels
         private ICommand _editCmd;
 
         public ICommand EditCmd
-            => _editCmd ?? (_editCmd = new AsyncCommand(Edit));
+            => _editCmd ?? (_editCmd = new AsyncCommand(Edit, CanEdit));
+
+        private bool CanEdit(object obj)
+        {
+            if (obj is Contract contract)
+            {
+                if (_userProvider.Role == UserRole.Manager && contract.Type == OperationType.Shipping)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            return false;
+        }
 
         private async Task Edit(object obj)
         {

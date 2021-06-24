@@ -80,6 +80,7 @@
             Grid.Row="3"
             Grid.Column="1"
             Margin="0,10,10,0"
+            IsEnabled="{Binding EnableTypes}"
             SelectedValue="{Binding SelectedType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             ItemsSource="{Binding Types, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
 

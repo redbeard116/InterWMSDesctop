@@ -279,11 +279,11 @@
     <Compile Include="NavigationServiceEx.cs" />
     <Compile Include="Services\Dictionary.cs" />
     <Compile Include="Services\ExcelTemplateService.cs" />
-    <Compile Include="ViewModels\Acts\ProductPriceActVM.cs" />
     <Compile Include="ViewModels\Acts\CounterpartyActVM.cs" />
     <Compile Include="Services\DialogService\DialogService.cs" />
     <Compile Include="Services\DialogService\IDialogService.cs" />
     <Compile Include="ViewModels\Acts\ContractActVM.cs" />
+    <Compile Include="ViewModels\Acts\PriceActVM.cs" />
     <Compile Include="ViewModels\Acts\ProductActVM.cs" />
     <Compile Include="ViewModels\Cmd\AsyncCommand.cs" />
     <Compile Include="ViewModels\ContractVM.cs" />
@@ -308,11 +308,11 @@
     <Compile Include="Views\Act\CounterpartyActV.xaml.cs">
       <DependentUpon>CounterpartyActV.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Act\PriceActV.xaml.cs">
+      <DependentUpon>PriceActV.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Act\ProductActV.xaml.cs">
       <DependentUpon>ProductActV.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Act\ProductPriceActV.xaml.cs">
-      <DependentUpon>ProductPriceActV.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ContractV.xaml.cs">
       <DependentUpon>ContractV.xaml</DependentUpon>
@@ -375,11 +375,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Act\ProductActV.xaml">
+    <Page Include="Views\Act\PriceActV.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Act\ProductPriceActV.xaml">
+    <Page Include="Views\Act\ProductActV.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

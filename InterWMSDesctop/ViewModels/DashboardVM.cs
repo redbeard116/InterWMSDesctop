@@ -50,6 +50,7 @@ namespace InterWMSDesctop.ViewModels
         #region Public Methods
         public override async Task Load()
         {
+
             _dialogService = AppServices.Instance.GetService<IDialogService>();
             _userVM = AppServices.Instance.GetService<UserVM>();
             _productsTypeVM = AppServices.Instance.GetService<ProductsTypeVM>();
@@ -64,60 +65,6 @@ namespace InterWMSDesctop.ViewModels
 
             Menu.Add(new MenuItem()
             {
-                Icon = new PackIconFeatherIcons() { Kind = PackIconFeatherIconsKind.Users },
-                Label = "Пользователи",
-                NavigationType = typeof(UsersV),
-                DataContext = _usersVM,
-                NavigationDestination = new Uri("Views/UsersV.xaml", UriKind.RelativeOrAbsolute)
-            });
-
-            Menu.Add(new MenuItem()
-            {
-                Icon = new PackIconFeatherIcons() { Kind = PackIconFeatherIconsKind.Type },
-                Label = "Типы продуктов",
-                NavigationType = typeof(ProductsTypeV),
-                DataContext = _productsTypeVM,
-                NavigationDestination = new Uri("Views/ProductsTypeV.xaml", UriKind.RelativeOrAbsolute)
-            });
-
-            Menu.Add(new MenuItem()
-            {
-                Icon = new PackIconFeatherIcons() { Kind = PackIconFeatherIconsKind.Book },
-                Label = "Места хранения",
-                NavigationType = typeof(StorageAreaV),
-                DataContext = _storageAreaVM,
-                NavigationDestination = new Uri("Views/StorageAreaV.xaml", UriKind.RelativeOrAbsolute)
-            });
-
-            Menu.Add(new MenuItem()
-            {
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.AccountMultipleOutline },
-                Label = "Контрагенты",
-                NavigationType = typeof(CounterpartyesV),
-                DataContext = _counterpartyesVM,
-                NavigationDestination = new Uri("Views/CounterpartyesV.xaml", UriKind.RelativeOrAbsolute)
-            });
-
-            Menu.Add(new MenuItem()
-            {
-                Icon = new PackIconIonicons() { Kind = PackIconIoniconsKind.CardMD },
-                Label = "Цены",
-                NavigationType = typeof(ProductPriceV),
-                DataContext = _productPriceVM,
-                NavigationDestination = new Uri("Views/ProductPriceV.xaml", UriKind.RelativeOrAbsolute)
-            });
-
-            Menu.Add(new MenuItem()
-            {
-                Icon = new PackIconSimpleIcons() { Kind = PackIconSimpleIconsKind.MicrosoftOneNote },
-                Label = "Товары",
-                NavigationType = typeof(ProductV),
-                DataContext = _productVM,
-                NavigationDestination = new Uri("Views/ProductV.xaml", UriKind.RelativeOrAbsolute)
-            });
-
-            Menu.Add(new MenuItem()
-            {
                 Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FileDocumentEditOutline },
                 Label = "Договора",
                 NavigationType = typeof(ContractV),
@@ -125,14 +72,75 @@ namespace InterWMSDesctop.ViewModels
                 NavigationDestination = new Uri("Views/ContractV.xaml", UriKind.RelativeOrAbsolute)
             });
 
-            OptionsMenu.Add(new MenuItem()
+            if (_userProvider.Role == ApiApp.Models.UserRole.Logistics)
             {
-                Icon = new PackIconForkAwesome() { Kind = PackIconForkAwesomeKind.BarChart },
-                Label = "Отчеты",
-                NavigationType = typeof(ReportsV),
-                DataContext = _reportsVM,
-                NavigationDestination = new Uri("Views/ReportsV.xaml", UriKind.RelativeOrAbsolute)
-            });
+                Menu.Add(new MenuItem()
+                {
+                    Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.AccountMultipleOutline },
+                    Label = "Контрагенты",
+                    NavigationType = typeof(CounterpartyesV),
+                    DataContext = _counterpartyesVM,
+                    NavigationDestination = new Uri("Views/CounterpartyesV.xaml", UriKind.RelativeOrAbsolute)
+                });
+            }
+
+            if (_userProvider.Role == ApiApp.Models.UserRole.Admin)
+            {
+
+                Menu.Add(new MenuItem()
+                {
+                    Icon = new PackIconFeatherIcons() { Kind = PackIconFeatherIconsKind.Type },
+                    Label = "Типы продуктов",
+                    NavigationType = typeof(ProductsTypeV),
+                    DataContext = _productsTypeVM,
+                    NavigationDestination = new Uri("Views/ProductsTypeV.xaml", UriKind.RelativeOrAbsolute)
+                });
+
+                Menu.Add(new MenuItem()
+                {
+                    Icon = new PackIconFeatherIcons() { Kind = PackIconFeatherIconsKind.Book },
+                    Label = "Места хранения",
+                    NavigationType = typeof(StorageAreaV),
+                    DataContext = _storageAreaVM,
+                    NavigationDestination = new Uri("Views/StorageAreaV.xaml", UriKind.RelativeOrAbsolute)
+                });
+
+                Menu.Add(new MenuItem()
+                {
+                    Icon = new PackIconIonicons() { Kind = PackIconIoniconsKind.CardMD },
+                    Label = "Цены",
+                    NavigationType = typeof(ProductPriceV),
+                    DataContext = _productPriceVM,
+                    NavigationDestination = new Uri("Views/ProductPriceV.xaml", UriKind.RelativeOrAbsolute)
+                });
+
+                Menu.Add(new MenuItem()
+                {
+                    Icon = new PackIconSimpleIcons() { Kind = PackIconSimpleIconsKind.MicrosoftOneNote },
+                    Label = "Товары",
+                    NavigationType = typeof(ProductV),
+                    DataContext = _productVM,
+                    NavigationDestination = new Uri("Views/ProductV.xaml", UriKind.RelativeOrAbsolute)
+                });
+
+                OptionsMenu.Add(new MenuItem()
+                {
+                    Icon = new PackIconForkAwesome() { Kind = PackIconForkAwesomeKind.BarChart },
+                    Label = "Отчеты",
+                    NavigationType = typeof(ReportsV),
+                    DataContext = _reportsVM,
+                    NavigationDestination = new Uri("Views/ReportsV.xaml", UriKind.RelativeOrAbsolute)
+                });
+
+                OptionsMenu.Add(new MenuItem()
+                {
+                    Icon = new PackIconFeatherIcons() { Kind = PackIconFeatherIconsKind.Users },
+                    Label = "Пользователи",
+                    NavigationType = typeof(UsersV),
+                    DataContext = _usersVM,
+                    NavigationDestination = new Uri("Views/UsersV.xaml", UriKind.RelativeOrAbsolute)
+                });
+            }
 
             OptionsMenu.Add(new MenuItem()
             {
@@ -142,7 +150,6 @@ namespace InterWMSDesctop.ViewModels
                 DataContext = _userVM,
                 NavigationDestination = new Uri("Views/UserV.xaml", UriKind.RelativeOrAbsolute)
             });
-
 
             _menuTimer = new DispatcherTimer();
             _menuTimer.Tick += async (e, sender) => await LoadItems();
